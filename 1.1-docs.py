@@ -25,3 +25,18 @@ def square(a):
 help(square)    # square?
 # Note the difference in output! now, we see 'square?' as more descriptive
 
+### Accessing Source Code with ??
+# again, works for self-defined functions, e.g. square below
+# square??
+# compared directly with square?, we see really the only diff is src code inclusion
+
+# some functions do not display source code, this would be stuff compiled in C or other extension langs
+# len??
+# most built-ins are this way
+
+### Tab autocomplete
+# mostly self-explanatory - quite handy
+
+# tab-completion with wildcard character (*)
+# *Warning?     # prints all objects in namespace ending with Warning
+# str.*find*?   # prints all str methods containing 'find' anywhere in name
