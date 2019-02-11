@@ -2,7 +2,7 @@
 # all comments are my own
 
 # additional resource: excellent history on relation of ipython and Jupyter below:
-# * it's up on my home browser. get the link from there and add *
+# https://www.datacamp.com/community/blog/ipython-jupyter
 
 ### launch an iPython shell:
 open Anaconda Prompt & enter:
