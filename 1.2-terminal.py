@@ -2,7 +2,6 @@
 # A more specific implementation of the GA linux terminal shortcuts. Per the src:
     # These shortcuts are not in fact provided by IPython itself, 
     # but through its dependency on the GNU Readline library
-
 # Only recording those most-helpful ones which I am not already familiar with
 
 ### Navigation
