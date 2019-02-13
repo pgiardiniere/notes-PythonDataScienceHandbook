@@ -1,3 +1,4 @@
+########################################
 ### Python's 'In' and 'Out' Objects
 # iPython In/Out prompts are actually stored in a list and dictionary, respectively.
 
@@ -20,4 +21,35 @@ math.cos(2)
 # the following will add the squares of the sin/cos:
     # Out[2] ** 2 + Out[3] ** 2
 
+########################################
+### Underscore Shortcuts & prior outputs
+# Standard python shell has 1 shortcut for prior output, the variable '_'
 
+
+## In iPython, extended as follows:
+# _     = 1st prior output
+# __    = 2nd prior output
+# ___   = 3rd prior output
+
+## e.g.
+# print(_)
+# print(__)
+# print(___)
+    # again, calling this variable does not iterate/get recorded in the output, for obvious reasons (don't trip over your own feet)
+
+########################################
+### Suppressing Output
+# to suppress output, add a semicolon to end of line. Like the following example:
+# math.sin(2) + math.cos(2);
+    # result is computed silently, output displayed neither on screen or in 'Out' dict
+    # recall also that semicolons are only used in .py files to executing multiple statements on one line, i.e. rarely.
+
+# common use: suppressing output when plotting information (e.g. with Matplotlib)
+
+########################################
+### Related Magic Commands
+# %history
+# pulls multiple prevoius Inputs at once. Example:
+# %history -n 1-4
+
+# return more use cases by looking up the documentation with %history?
