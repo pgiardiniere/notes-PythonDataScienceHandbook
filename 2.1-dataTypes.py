@@ -71,7 +71,56 @@ print(A)
 # this is well and good, but numpy achieves the same efficiency, while also containing efficient data operations/methods
 
 ### NumPy arrays (np.array[])   --- rest of notes will concern these arrays only
-
 ### NumPy Array construction and manipulation
-#
-#
+import numpy as np
+np.array([1,4,2,5,3])
+# recall these must be single-type, and np is inferring type from the data
+# if mixed types, an attempt at upcasting will be made (see float ex below)
+np.array([3.14, 2, 4])
+# to explicitly set type, use 'dtype' keyword
+np.array([1, 2, 3, 4], dtype='float32')
+# also, unlike lists, we can initialize a multi-dimensional array
+# inner lists (i+3) are treated as rows  
+np.array([range(i, i+3) for i in [2,4,6]])
+# it pulls the value at index i from array, then in the current array position we are constructing,
+# it places an array of range of vals from i to i+3. the result is a neat little upwards counting 2d arr
+
+## Creating arrays from scratch:
+# np contains some built-in constructor methods that can be useful:
+# 
+# create len=10 arr filled with 0s
+np.zeros(10, dtype=int)
+# create a 3x5 arr filled with 1s (floating point type)
+np.ones((3,5), dtype=float)
+# create a 3x5 arr filled with 3.14s 
+np.full((3,5), 3.14)
+
+# create an array filled with linear seq, counting from 0 to 20, stepping by 2s
+np.arange(0,20,2)
+# create an array of 5 values, evenly spaced, between 0 and 1
+np.linspace(0, 1, 5)
+
+# create a 3x3 array of uniformly distributed random values 
+# (between 0 and 1)
+np.random.random((3,3))
+# create a 3x3 array of normally  distributed random values 
+# with mean 0 and St.Dev 1
+np.random.normal((0, 1, (3,3)))
+# create a 3x3 array of random integers in the interval [0, 10)
+np.random.randint(0, 10, (3,3))
+# create a 3x3 identity matrix
+np.eye(3)
+# create an unintialized array of 3 ints
+# (values will be whatever happens to already exist at that mem location)
+np.empty(3)
+
+## np standard data types
+# np is built in C, so it shares same data types
+# you can see a list at the end of the chapter, or refer to C documentation
+
+
+
+
+
+
+
