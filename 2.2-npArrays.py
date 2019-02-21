@@ -9,6 +9,7 @@
     # Reshaping of arrays
     # Joining and Splitting of arrays
 
+##############################
 ### NumPy Array Attributes:
 # using 3 arrays for examples, a 1d, 2d, and 3d array
 # using a set seed for reference
@@ -33,5 +34,27 @@ print("x3 shape:", x3.shape)        # returns: (3, 4, 5)
 print("x3 size:", x3.size)          # returns: 60
 print("x3 dtype:", x3.dtype)        # returns: int32
 print("x3 itemsize:", x3.itemsize)  # returns: 4
-print("x3.nbytes:", x3.nbytes)      # returns: 240          # also note, this is product of size * itemsize, makes sense
+print("x3.nbytes:", x3.nbytes)      # returns: 240          # generally this will simply be equal to product of size * itemsize
 
+##############################
+### Array indexing
+# for a 1d array, works just like any other lang & standard python lists:
+x1
+x1[0]
+x1[4]
+x1[-2]   # negatives index counting back from end of arr
+
+# for a 2d or greater array, we can feed in a tuple of indeces
+x2
+x2[0, 0]
+x2[2, 0]
+x2[2, -1]
+x2[0, 0] = 12       # can access and reassign, as expected
+x2[0, 0] = 3.14     # however, type must be constant, so this will get SILENTLY truncated as our arrays are int32 types
+
+
+##############################
+### Array slicing
+# 
+# 
+# 
