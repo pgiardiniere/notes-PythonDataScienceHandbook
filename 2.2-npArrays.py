@@ -76,4 +76,35 @@ x[5::-2]
 
 ## Slicing 2d+ subarrays
 x2
-x2[:2, :3]  # 2 rows, 3 columns
+x2[:2, :3]      # 2 rows, 3 columns
+x2[:3, ::2]     # 3 rows (all), every other column
+
+# subarray dimensions can be reversed together with negative step
+x2[::-1, ::-1]
+
+
+## Accessing array rows and columns:
+# get a single row of columns of an array, simply combine indexing and slicing w/ empty slice
+x2[:, 0]    # return first column of x2
+x2[0, :]    # return first row of x2
+x2[0]       # return first row of x2 - functionally identical to above line
+
+
+## subarrays as no-copy views
+# array slices in np are views, not copies, of array data
+# an example to demonstrate:
+x2                              # return original x2 data
+x2_sub = x2[:2, :2]             # create a subarray of x2
+x2_sub                          # return contents of subarray
+x2_sub[0,0] = 9001              # modify subarray contents
+x2                              # return MODIFIED x2 data
+
+
+## Creating copies of arrays: copy()
+# when we DO desire an independent copy to be made of an array/subarray, we use the copy() method
+x2                              # return original x2 data
+x2_sub_copy = x2[:2, :2].copy() # create a subarray of x2 - independent copy!
+x2_sub_copy                     # return contents of subarray
+x2_sub_copy[0,0] = 42           # modify subarray contents
+x2                              # return ORIGINAL x2 data
+
