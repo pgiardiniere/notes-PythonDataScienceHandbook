@@ -128,8 +128,47 @@ x[:, np.newaxis]        # column vector via newaxis
 
 ##############################
 ### Array Concatenation and Splitting
-# Concatenation = joining multiple arrays into one
+## Concatenation
 # routines/methods: np.concatenate, np.vstack, np.hstack
-# 
-# 
-# Splitting     = splitting one array into multiple
+
+# np.concatenate() for 1d arrays:
+x = np.array([1, 2, 3])
+y = np.array([3, 2, 1])
+np.concatenate([x, y])      # returns: [1, 2, 3, 3, 2, 1]
+z = np.array([99, 99, 99])
+np.concatenate([x, y, z])   # returns: [1, 2, 3, 3, 2, 1, 99, 99, 99]
+
+# np.concatenate() for 2d arrays:
+grid = np.array([[1, 2, 3,], [4, 5, 6]])
+np.concatenate([grid, grid])                # concatenate along first axis
+np.concatenate([grid, grid], axis=1)        # concatenate along second axis (0-indexed)
+
+## for mixed dimension arrays, np.vstack and np.hstack maintain clarity
+# vstack() ex:
+x    = np.array([9, 8, 7])
+grid = np.array([[6, 5, 4],
+                 [3, 2, 1]])
+np.vstack([x, grid])
+
+# hstack() ex:
+y = np.array([[99],
+              [99]])
+np.hstack([grid, y])
+
+# NOT covered: np.dstack()  --- stacks arrays along the third axis
+
+
+## Splitting
+# routines/methods: np.split, np.vsplit, np.hsplit
+# np.split() ex:
+x = [1, 2, 3, 99, 99, 3, 2, 1]
+x1, x2, x3 = np.split(x, [3, 5])    # x1=[1, 2, 3] x2=[99, 99] x3=[3, 2, 1] 
+
+# np.vsplit() ex:
+grid = np.arange(16).reshape((4, 4))
+upper, lower =  np.vsplit(grid, [2])
+
+# np.hsplit() ex:
+left, right = np.hsplit(grid, [2])
+
+# NOT covered: np.dsplit()  --- stacks arrays along the third axis
