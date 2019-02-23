@@ -55,6 +55,25 @@ x2[0, 0] = 3.14     # however, type must be constant, so this will get SILENTLY 
 
 ##############################
 ### Array slicing
-# 
-# 
-# 
+# we can access single array elements with square brackets
+# we can slice multiple array elements (or Subarrays) with : inside of square brackets
+# for array x:
+# x[start:stop:step]
+# default values: start=0 stop='size of dimension (length)', step=1
+
+## Slicing 1d subarrays
+x = np.arange(10)
+x[:5]   # first 5 elements
+x[5:]   # elements after 5
+x[4:7]
+x[::2]
+x[1::2]
+
+# interesting note: negative 'step' value swaps the default 'start' and 'stop' values.
+# meaning it's an effective shorthand to reverse an array:
+x[::-1]
+x[5::-2]
+
+## Slicing 2d+ subarrays
+x2
+x2[:2, :3]  # 2 rows, 3 columns
