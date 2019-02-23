@@ -7,7 +7,7 @@
     # Indexing of arrays
     # Slicing of arrays
     # Reshaping of arrays
-    # Joining and Splitting of arrays
+    # Concatenation and Splitting of arrays
 
 ##############################
 ### NumPy Array Attributes:
@@ -108,3 +108,28 @@ x2_sub_copy                     # return contents of subarray
 x2_sub_copy[0,0] = 42           # modify subarray contents
 x2                              # return ORIGINAL x2 data
 
+
+##############################
+### Reshaping of arrays
+# 'reshape()' is most flexible method for doing this
+# it attempts to create a no-copy view of initial array, but sometimes must create an independent copy (non-contiguous mem buffers)
+grid = np.arange(1, 10).reshape((3, 3))
+# this example works b/c the size of both arrays matches
+
+## 1d array >> 2d array
+# reshape() method:
+x = np.array([1,2,3])
+x.reshape((1,3))        # row vector via reshape
+x.reshape((3,1))        # column vector via reshape
+
+# 'newaxis' keyword within slice:
+x[np.newaxis, :]        # row vector via newaxis
+x[:, np.newaxis]        # column vector via newaxis
+
+##############################
+### Array Concatenation and Splitting
+# Concatenation = joining multiple arrays into one
+# routines/methods: np.concatenate, np.vstack, np.hstack
+# 
+# 
+# Splitting     = splitting one array into multiple
