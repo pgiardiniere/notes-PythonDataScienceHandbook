@@ -23,6 +23,7 @@ big_array = np.random.randint(1, 100, size=1000000)
 compute_reciprocals(big_array)  # remember to precede with %timeit in ipython
     # in my case, returned "1.63 s +- 3.97 ms per loop ..."
 
+##############################
 ### UFuncs introduction
 # Interface for statically typed, compiled routines are known as vectorized operations
 # can be achieved by performing an operation on the array, which then is applied to each el
@@ -48,14 +49,37 @@ x = np.arange(9).reshape((3,3))
 ##############################
 ### Exploring additional UFuncs 
 # Two types, Unary ufuncs and Binary ufuncs
-# 
+
+
 ## Array Arithmetic
+# NumPy ufuncs are nice, they make use of Python's native arithmetic operators
+# addition, subtraction, multiplication, division, etc.
+x = np.arange(4)
+x
+x + 5
+x - 5
+x * 2
+x / 2
+x // 2  # floor division 
+-x      # unary negation
+x ** 2  # exponentiation
+x % 2   # modulus (remainder)
+
+# can also string together operations, standard operations order respected
+-(0.5*x + 1) ** 2
+
+# the arithmetic operations are convenient wrappers for specific NP funcs, + relates to add
+np.add(x, 2)    # long form
+x + 2           # wrapper equivalent
+
+# can see a partial list of the long-form uFunc arithmetic utilies used above in the chapter text
+
 ## Absolute Value
 ## Trigonometric functions
 ## Exponents and logarithms
 ## Specialized ufuncs
 
 ### Advanced UFunc Features
-#
-#
-#
+# 
+# 
+# 
