@@ -74,8 +74,32 @@ x + 2           # wrapper equivalent
 
 # can see a partial list of the long-form uFunc arithmetic utilies used above in the chapter text
 
+
 ## Absolute Value
+# python has built-in abs value func, np does recognize it
+x = np.array([-2, -1, 0, 1, 2])
+abs(x)
+# np also has its own function np.absolute() --- also callable as np.abs()
+np.absolute(x)
+np.abs(x)
+# ufun also handles complex data, where abs val returns magnitude
+x = np.array([3 - 4j, 4 - 3j, 2 + 0j, 0 + 1j])
+np.abs(x)
+
+
 ## Trigonometric functions
+# we can start by defining an array of angles
+theta = np.linspace(0, np.pi, 3)
+theta
+np.sin(theta)
+np.cos(theta)
+np.tan(theta)
+# and inverse trig funcs
+x = [-1, 0, 1]
+np.arcsin(x)
+np.arccos(x)
+np.arctan(x)
+
 ## Exponents and logarithms
 ## Specialized ufuncs
 
