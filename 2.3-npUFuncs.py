@@ -101,9 +101,57 @@ np.arccos(x)
 np.arctan(x)
 
 ## Exponents and logarithms
+x = [1, 2, 3]
+x
+np.exp(x)       # basic exp yields natural exponential: 2.718
+np.exp2(x)      
+np.power(3, x)
+
+x = [1, 2, 4, 10]
+x
+np.log(x)       # natural logarithm
+np.log2(x)      # base 2 logarithm
+np.log10(x)     # base 10 logarithm
+# specialized log funcs, useful for precision over small inputs
+x = [0, .001, .01, .1]
+np.expm1(x)
+np.log1p(x)
+
 ## Specialized ufuncs
+# some additional examples: hyperbolic trig funcs, bitwise arithmetic, comparison operators,
+# radian > degree conversions, rounding/remainders, etc. See all in NumPy docs
+
+# another source (with demonstrations): 
+# scipy.special
+from scipy import special
+
+# Gamma functions (generalized factorials) & related funcs
+x = [1, 5, 10]
+special.gamma(x)    # gamma
+special.gammaln(x)  # ln|gamma      not sure why pylint IDs as errors - runs fine
+special.beta(x, 2)  # beta
+
+# Error function (integral of Gaussian), complement, and inverse
+x = np.array([0, 0.3, 0.7, 1.0])
+special.erf(x)
+special.erfc(x)
+special.erfinv(x)
+
 
 ### Advanced UFunc Features
+## Specifying output: using "out"
+# We can directly specify mem location to store result of a calculation using "out"
+x = np.arange(5)
+y = np.empty(5)
+np.multiply(x, 10, out=y)
+y
+# Can also utilize this with array views
+y = np.zeros(10)
+y = np.power(2, x, out=y[::2])
+y
+# compare speed between statement 2 and below, for a larger op, to see savings of not having temp array creation & copy
+y[::2] = 2 ** x
+
 # 
 # 
 # 
