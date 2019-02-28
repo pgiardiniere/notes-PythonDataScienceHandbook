@@ -152,6 +152,26 @@ y
 # compare speed between statement 2 and below, for a larger op, to see savings of not having temp array creation & copy
 y[::2] = 2 ** x
 
-# 
-# 
-# 
+## Aggregates
+# With reduce() method, we can repeatedly execute a given operation to 
+# all elements of the array, until a single result remains
+# example with add, multiply
+x = np.arange(1, 6)
+np.add.reduce(x)
+np.multiply.reduce(x)
+
+# with accumulate() method, we can reduce AND store all the intermediate values
+np.add.accumulate(x)
+np.multiply.accumulate(x)
+
+# note that there are dedicated NumPy funcs for these particular cases
+# np.sum, np.prod, np.cumsum, np.cumprod - respectively
+
+## Outer products
+# Any ufunc can compute the output of all pairs of two different inputs with outer()
+x = np.arange(1, 6)
+np.multiply.outer(x, x)
+
+# ufunc.at() and ufunc.reduceat() will be covered later in Fancy Indexing, and build on this idea
+
+# additional ufuncs (full list) available at NumPy and SciPy documentation
