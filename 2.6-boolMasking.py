@@ -23,5 +23,39 @@ inches.shape                # (365, 0) - daily measurement for 1 yr
 
 ###################################
 ### Comparison Operators as ufuncs
-#
-#
+# Before, we covered basic arithmetic operators as ufuncs: +, -, *, /
+# Now, we can add comparson operators to that list:
+# <, >, <=, >=, !=, ==
+
+# the result these return is always an array with boolean data type
+
+x = np.array([1, 2, 3, 4, 5])
+x < 3       # equivalent to np.less(x, 3)
+x > 3       # equiavlent to np.greater(x, 3)
+x <= 3      # equiavlent to np.less_equal(x, 3)
+x >= 3      # equiavlent to np.greater_equal(x, 3)
+x != 3      # equiavlent to np.notequal(x, 3)
+x == 3      # equiavlent to np.equal(x, 3)
+
+# also like before, these work with multi-dimensional arrays. 2D ex below:
+rng = np.random.RandomState(0)
+x = rng.randint(10, size=(3, 4))
+x
+x < 6
+
+## Working with Boolean Arrays
+# As is typical, True evaluates to 1, False evaluates to 0
+# so both of these methods count total True entries:
+np.count_nonzero(x < 6)
+np.sum(x < 6)
+# using sum, we can break up along axes as well
+np.sum(x < 6, axis=1)   # num vals < 6 in each row
+
+np.any(x > 8)   # any vals > 8, returns bool (True)
+np.all(x < 0)   # any vals < 0, returns bool (False)
+np.all(x < 10)
+np.all(x == 6)
+# can also break these up along axes:
+np.all(x < 8, axis=1)
+
+## Boolean Operators
