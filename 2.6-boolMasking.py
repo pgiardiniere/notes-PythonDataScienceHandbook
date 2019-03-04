@@ -59,3 +59,54 @@ np.all(x == 6)
 np.all(x < 8, axis=1)
 
 ## Boolean Operators
+# Reminder: Python's bitwise logic operators:
+# &, |, ^, ~
+
+# &     np.bitwise_and
+# |     np.bitwise_or
+# ^     np.bitwise_xor
+# ~     np.bitwise_not
+
+# say we want all days with more than .5 inch rain, and less than 1
+np.sum((inches > .5) & (inches < 1))
+# recall bitwise operator precedence necessitates the extra use of parens
+
+# with this knowledge, we can use the following implementation to answer some basic questions
+np.sum(inches == 0)
+np.sum(inches != 0)
+np.sum(inches > 0.5)
+np.sum((inches > 0) & (inches > .2))
+
+##############################
+### Boolean Arrays as Masks
+# In prior section, used aggregates computed directly on Boolean arrays
+# But instead, we can use Boolean arrays as masks in order to select subsets of data
+
+x
+x < 5       # return the boolean array for condition
+x[x < 5]    # we can index ON the boolean array to return only vals which match condition
+
+# construct mask of all rainy days
+rainy = (inches > 0)
+
+# construct mask of all summer days (June 21st being 172nd day)
+days = np.arange(365)
+summer = (days > 172) & (days < 262)
+
+np.median(inches[rainy])            # median precipitation on rainy days 
+np.median(inches[summer])           # median precipitation on summer days
+np.max(inches[summer])              # max precipitation on summer days
+np.median(inches[rainy & ~summer])  # median precipitation on non-summer days
+
+
+# Aside: using keywords "and/or" vs Operators "&/|"
+# this is a subtle difference
+	# the keywords and/or operate on the entire object
+	# the symbols &/| operate on the bits within the object
+
+# using "and" or "or" asks Python to treat the object act a single Bool entity
+
+# this has implications which are interesting (see chapter for exact details)
+# the most important take-away is that when dealing specifically with numpy arrays, we always prefer 
+# the bitwise, symbol operators "&" or "/"
+
