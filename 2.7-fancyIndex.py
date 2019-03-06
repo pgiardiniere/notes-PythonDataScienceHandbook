@@ -81,8 +81,24 @@ x[i] = 99
 x
 # we can use any assignment operators
 x[i] -= 10
-# be sure to track when using a single index for multiple operations, you may lose one of your vals
+
+## multiple operations on a single index: unintended effects!
+x = np.zeros(100)
 x[[0, 0]] = [4, 6]  # assigns 4, then assigns 6 to index 0. Only 6 will remain
-x
+x                   # [6. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+# expanding on that idea...
+i = [2, 3, 3, 4, 4, 4]
+x[i] += 1
+x                   # [6. 0. 1. 1. 1. 0. 0. 0. 0. 0.]
+# the assignment is repeated multiple times, but not the augmentation of "x[i] = x[i] + 1"
 
+## multiple operations on a single index: the right way
+# reset & re-use example above. this time using at()
+x = np.zeros(10)
+np.add.at(x, i, 1)
+x                   # [0. 0. 1. 2. 3. 0. 0. 0. 0. 0.]
+# at() does in-place application of the given operator at parameters specified
+# reduceat() is not covered here, but similar in application
 
+### example: binning data
+# revisit later after Matplotlib ch
