@@ -54,3 +54,43 @@ X
 np.sort(X, axis=0)  # sort each column of X
 np.sort(X, axis=1)  # sort each row of X
 # this treats each row/column as an independent array - relationships b/w the two are lost
+
+##############################
+### Partial sorts: Partitioning
+# np.partition()
+# splits the array into 2 parts, where the first K indeces are the smallest vals in arr (interior of partitions is arbitrary order!)
+# parameters: arr, K (num of smallest indeces to shift forward)
+x = np.array([7, 2, 3, 1, 6, 5, 4])
+np.partition(x, 3)
+
+# can also partition along axes of multi-dimensional arrays
+np.partition(X, 2, axis=1)
+
+# np.argpartition() extends the idea of np.argsort() - i.e. np.argpartition() returns the indeces of of the partition (see example)
+
+## Example: k-Nearest Neighbors:
+# create random set of 10 points on 2d plane
+X = rand.rand(10, 2)
+    ### matplotlib stuff for visualization ###
+
+# compute distance between each pair of points (where distance = squared difference of each dimension)
+# broadcasting! (chapter includes following line broken into steps as well)
+dist_sq = np.sum((X[:, np.newaxis, :] - X[np.newaxis, :, :]) ** 2, axis=-1) 
+# confirm point - (self) == 0
+dist_sq.diagonal()
+
+nearest = np.argsort(dist_sq, axis=1)
+nearest
+
+# first column simply validates that the nearest 'neighbor' is actually the same point, so we can ignore that
+
+# this is more work than necessary though, argpart will do the heavy lifting for us if we're just interested in nearest $k$ neighbors
+# we would partition row so the smallest $k + 1$ neighbor is in first column of the array
+K = 2
+nearest_partition = np.argpartition(dist_sq, K + 1, axis=1)
+
+### more matplotlib visualization ###
+
+# note: for VERY large nearest neighbor searches, you may instead opt for "Scikit-learn" lib for tree-based / approximate algs 
+# for even greater efficiency
+
