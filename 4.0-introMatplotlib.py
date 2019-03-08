@@ -1,0 +1,43 @@
+### Visualization with Matplotlib
+# initially released in 2003, it's starting to show it's age (and get replaced)
+# it still has ubiquitous support though, and is widely popular to date
+
+# "newer tools like ggplot and ggvis in R"
+# ..."web visualization toolkits based on D3.js and HTML5 canvas"
+    # lol and by just googling the name of the framework,
+    # naturally there's a Medium post on just doing it yourself 
+    # with modern CSS / native JS & virtual DOM manip instead of the framework
+    # https://medium.com/@PepsRyuu/why-i-no-longer-use-d3-js-b8288f306c9a
+
+### General Matplotlib Tips
+
+## Importing shorthand:
+import matplotlib as mpl            # for entire lib
+import matplotlib.pyplot as plt     # for pyplot
+
+## Setting styles:
+plt.style.use('classic')
+
+## using 'show()':
+# depends on context of mpl use.
+# 1) in a script
+# 2) in iPython terminal
+# 3) in iPython notebook
+
+# Plotting from a script:
+# in this context, plt.show() is very useful
+# plt.show() starts an event loop, looks for currently active figure objects, and opens one or more
+# interactive windows displaying the figure(s)
+
+# example:
+# ---------- file: myplot.py ----------
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.linspace(0, 10, 100)
+
+plt.plot(x, np.sin(x))
+plt.plot(x, np.cos(x))
+
+plt.show()
+# if you run this script from command-line prompt, it will result in a window
+# opening with the figure --- yay it works
