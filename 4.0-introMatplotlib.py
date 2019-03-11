@@ -97,3 +97,22 @@ plt.plot(x, np.cos(x))
     # plt.gca (get current axes)
 
 ## Object-based interface: More power
+# Instead of depending on 'active' figures/axes as above, 
+# the plotting functions are methods of explicit Figure and Axes objects
+
+# ---------- Object style example ----------
+# first, create a grid of plots
+# ax will be an array of two Axes objects
+fig, ax = plt.sublplots(2)
+
+# Call plot() method on appropriate object
+ax[0].plot(x, np.sin(x))
+ax[1].plot(x, np.cos(x))
+
+# ---------- End example --------------------
+
+# for simpler figures, it's a matter of preference which style to use
+# for 'serious' or more complex work, object-oriented becomes a necessity
+
+# book will switch between the 2 styles
+# (in most cases in-text, only real diff is using plt.plot() or ax.plot())
