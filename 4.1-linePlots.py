@@ -57,3 +57,57 @@ plt.plot(x, x + 3, ':r')            # dotted red
 # single character codes reflect standard abbreviations
 # RGB  (red/green/blue)
 # CMYK (Cyan/Magenta/Yellow/blacK)
+
+# view the docstring of plt.plot() for more available keywords to edit appearance of plot
+
+#########################
+### Adjusting plots: Axes limits
+# Generally, can count on Matplotlib to choose default axes limits
+# but if you want to, you can exercise direct control
+
+## most basic approach:
+# plt.xlim()
+# plt.ylim()
+plt.plot(x, np.sin(x))
+plt.xlim(-1, 11)
+plt.ylim(-1.5, 1.5)
+
+# can also display the graph in reverse by reversing your args
+plt.plot(x, np.sin(x))
+plt.xlim(10, 0)
+plt.ylim(1.2, -1.2)
+
+## related: plt.axis() -- NOT plt.axes() -- can set x and y limits 1 call
+# just pass list containing: [xmin, xmax, ymin, ymax]
+plt.plot(x, np.sin(x))
+plt.axis([-1, 11, -1.5, 1.5])
+
+# alternatively, can auto-tighten bounds like so:
+plt.plot(x, np.sin(x))
+plt.axis('tight')
+# or ensure equal aspect ratio on-screen (so 1 unit in x == 1 unit in y) 
+plt.plot(x, np.sin(x))
+plt.axis('equal')
+
+# view the docstring of plt.axis() for more available capabilities
+
+#########################
+### Labeling Plots
+# a brief look at: titles, axis labels, simple legends
+
+# Title and Axis labels are simples, can set with these methods:
+plt.plot(x, np.sin(x))
+plt.title("A Sine Curve")
+plt.xlabel("x")
+plt.ylabel("sin(x)")
+
+# position, size, and style of these labels can be adjusted, check docs
+# of the individual funcs for info on how to do that
+
+# Simple Legends - useful when displaying multiple lines within single
+# set of axes (i.e. 1 plot) - plt.legend()
+# can specify 'label' keyword in plt.plot() func, then call plt.legend() to display those labels
+plt.plot(x, np.sin(x), '-g', label='sin(x)')
+plt.plot(x, np.cos(x), '-b', label='cos(x)')
+plt.axis('equal')
+plt.legend()
