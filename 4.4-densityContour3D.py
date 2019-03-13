@@ -10,7 +10,7 @@ plt.style.use('seaborn-white')
 import numpy as np
 
 ##############################
-### Basic Contour plot for 3d visualization:
+### Contour plots for 3d visualization:
 # for function: $z = f(x, y)$
 def f(x, y):
     return np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
@@ -59,3 +59,12 @@ plt.axis(aspect='image')
     # plt.imshow() doesn't accept x and y grids, so manually specify extents
     # plt.imshow() origin defaults to upper left corner (actually kind of makes sense to me from an imp standpoint). Manually specify 'lower' 
     # plt.imshow() axis default adjusts axis aspect ratio to match input data. set aspect='image' to force x, y equality
+
+### Combination contour/image plot:
+# use imshow() with alpha (transperancy) set
+# on top of it, draw a basic contour plot --- with in-line labels! plt.clabel()
+contours = plt.contour(X, Y, Z, 3, colors='black')
+plt.clabel(contours, inline=True, fontsize=8)
+
+plt.imshow(Z, extent=[0, 5, 0, 5], origin='lower', cmap='RdGy', alpha=0.5)
+plt.colorbar()
