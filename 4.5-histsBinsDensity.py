@@ -32,5 +32,57 @@ counts, bin_edges = np.histogram(data, bins=5)
 print(counts)
 
 ## Displaying & customizing 2D histogram plots ---
-# 1st way:
-# 2nd way: 
+# setup data before beginning
+mean = [0, 0]
+cov = [[1, 1], [1, 2]]
+x, y = np.random.multivariate_normal(mean, cov, 10000).T
+
+# 1st way: plt.hist2d()
+plt.hist2d(x, y, bins=30, cmap='Blues')
+cb = plt.colorbar()
+cb.set_label('counts in bin')
+
+# as with plt.hist() above, can customize plot/binning. See docstring for details
+
+# 2nd way: np.histogram2d()
+# as plt.hist() is to np.histogram() :: plt.hist2d is to np.histogram2d
+counts, xedges, yedges = np.histogram2d(x, y, bins=30)
+
+# for dimensions beyond 2d, use np.histogramdd()
+
+#########################
+### Hexagonal binnings with plt.hexbin()
+# by default, the 2d histogram creates a tesselation of squares across its axes
+# instead we can do hexagons
+plt.hexbin(x, y, gridsize=30, cmap='Blues')
+cb = plt.colorbar(label='count in bin')
+
+### Kernel Density Estimation
+# another method of evaluating densities across multiple dimensions
+    # (this does have a dedicated chapter a bit later)
+# one quick-simple KDE impl. exists in scipy.stats
+from scipy.stats import gaussian_kde
+
+# fit an array of size [Ndim, Nsamples]
+data = np.vstack([x, y])
+kde = gaussian_kde(data)
+
+# evaluate on a regular grid
+xgrid = np.linspace(-3.5, 3.5, 40)
+ygrid = np.linspace(-6, 6, 40)
+Xgrid, Ygrid = np.meshgrid(xgrid, ygrid)
+Z = kde.evaluate(np.vstack([Xgrid.ravel(), Ygrid.ravel()]))
+
+# Plot the result as img
+plt.imshow(Z.reshape(Xgrid.shape), origin='lower', aspect='auto',
+           extent=[-3.5, 3.5, -6, 6]), cmap='Blues')
+cb = plt.colorbar()
+cb.set_label("density")
+
+# from the output, we can observe the smoothing effect in action
+# we obviously lose some detail for this, gaussian_kde uses a rule-of-thumb to find near-optimal smoothing length
+# given the input data used.
+
+# other KDE implementations in SciPy include:
+    # sklearn.neighbors.KernelDensity
+    # statsmodels.nonparametric.kernel_density.KDEMultivariate
