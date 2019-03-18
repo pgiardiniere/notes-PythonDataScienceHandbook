@@ -120,4 +120,9 @@ ax.axis('equal')
 # specify the lines and labels of the first legend
 ax.legend(lines[:2], ['line A', 'line B'], loc='upper right', frameon=False)
 
+# create the second legend and add the artist manually
+from matplotlib.legend import Legend
+leg = Legend(ax, lines[2:], ['line C', 'line D'], loc='lower right', frameon=False)
+ax.add_artist(leg)
 # ------------------------------
+
