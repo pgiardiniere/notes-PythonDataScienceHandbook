@@ -61,7 +61,7 @@ plt.legend(framalpha=1, framon=True)
     # "For example, perhaps you're be using the size of points to mark..."
     # he's human like me after all lel
 
-# following is an example of using size of points to indicate pops
+# following is an example of using size of points to indicate populations
 # legend should specify scale of sizes at points, accomplished by plotting labeled data with no entries
 
 # ------------- example begin -----------------
@@ -89,3 +89,35 @@ plt.legend(scatterpoints=1, frameon=False, labelspacing=1, title='City Area')
 plt.title('California Cities: Area and Population')
 
 # ------------- example end -----------------
+
+# the legend will always reference an object that is on the plot
+# in this case, the objects were not on the plot (the gray circles)
+# so we plot empty lists to achieve them
+
+# by plotting empty lists, we create labled plot objects which are picked
+# up by the legend, now it reveals the scale visual factor
+
+#########################
+### Multiple legends
+# sometimes it makes sends to add multiple legends to the same axes
+# plt.legend() ONLY allows for 1 however
+
+# to work around it, we must create a new legend artist from scratch,
+# then use the ax.add_artist() method to add the second artist to the plot
+
+# ------------------------------
+fig, ax = plt.subplots()
+
+lines = []
+styles = ['-', '--', '-.', ':']
+x = np.linspace(0, 10, 1000)
+
+for i in range(4):
+    lines += ax.plot(x, np.sin(x - i * np.pi / 2), styles[i], color='black')
+
+ax.axis('equal')
+
+# specify the lines and labels of the first legend
+ax.legend(lines[:2], ['line A', 'line B'], loc='upper right', frameon=False)
+
+# ------------------------------
