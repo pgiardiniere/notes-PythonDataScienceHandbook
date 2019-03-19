@@ -106,13 +106,51 @@ view_colormap('RdBu')
 # see the following example for a use case:
 
 # ----------------------------------------
+
 # make noise in 1% of the image pixels
 speckles = (np.random.random(I.shape) < 0.01)
 I[speckles] = np.random.normal(0, 3, np.count_nonzero(speckles))
 
-plt.figure(figsize(10, 3.5))
+plt.figure(figsize=(10, 3.5))
 
 plt.sublplot(1, 2, 1)
 plt.imshow(I, cmap='RdBu')
+plt.colorbar()
+
+plt.subplot(1, 2, 2)
+plt.imshow(I, cmap='RdBu')
+plt.colorbar(extend='both')
+plt.clim(-1, 1)
+
+# ----------------------------------------
+
+# per example, 
+# in the left panel, default color limits incorporate the added noise, ruining the visualization
+# in the right panel, the visualization limits disregard the noise, displaying a useful graph
+
+##############################
+### Discrete color bars
+# colormaps by default are continuous, but can be made to represent discrete values
+# plt.cm.get_cmap() function, passing name of suitable colormap and desire bin num
+plt.imshow(I, cmap=plt.cm.get_cmap('Blues', 6))
+plt.colorbar()
+plt.clim(-1, 1)
+
+## example: handwritten digits
+# we'll use some data included in scikit-learn of hand written digits data
+
+# download the data and visualize several example images with plt.imshow():
+
+# ----------------------------------------
+
+# Load images of the digits 0 through 5 and visualize several of them
+from sklearn.datasets import load_digits
+digits = load_digits(n_class=6)
+
+fig, ax = plt.subplots(8, 8, figsize=(6, 6))
+for i, axi in enumerate(ax.flat):
+    axi.imshow(digits.images[i], cmap='binary')
+    axi.set(xticks=[], yticks=[])
+
 
 # ----------------------------------------
