@@ -54,7 +54,7 @@ def grayscale_cmap(cmap):
     # convert RGBA to perceived grayscale Luminance
     # cf. http://alienryderflex.com/hsp.html
     RGB_weight = [0.299, 0.587, 0.114]
-    luminance = np.sqrt(np.dot(colorsp:, :3] ** 2, RGB_weight))
+    luminance = np.sqrt(np.dot(colors[:, :3] ** 2, RGB_weight))
     colors[:, :3] = luminance[:, np.newaxis]
 
     return LinearSegmentedColormap.from_list(cmap.name + "_gray", colors, cmap.N)
@@ -71,3 +71,32 @@ def view_colormap(cmap):
                            subplot_kw=dict(xticks=[], yticks=[]))
     ax[0].imshow([colors], extent=[0, 10, 0, 1])
     ax[1].imshow([grayscale], extent=[0, 10, 0, 1])
+
+view_colormap('jet')
+
+# from output, can see bright white stripes in the grayscale image.
+# note how they are present even in full-color
+# these brighter sections naturally draw the eye, which defeats the purpose
+# of using color-scale for data representation (unless you're intentionally
+# obscuring meaning)
+
+# "viridis" became the replacement for jet
+# by plotting we can tell difference immediately: even brightness (in color and grayscale)
+view_colormap('viridis')
+
+# for a rainbow-style scheme on continuous data, can use the "cubehelix" colormap in place of
+view_colormap('cubehelix')
+
+# for other applications (e.g. positive-negative deviations from a mean)
+# dual-color colorbars like RdBu are useful
+# --- note that grayscale translation of these dual-color schemes lose +/- info
+# keeps magnitude only, not direction
+view_colormap('RdBu')
+
+# to view additional colormaps, view the plt.cm submodule
+# or refer to the Seaborn documentation
+
+###################################
+### Color limits and extensions
+# As seen, Matplotlib allows for colorbar customizations.
+# Colorbar is an instance of plt.Axes, so all the axes and tick formatting already used are applicable
