@@ -100,3 +100,19 @@ view_colormap('RdBu')
 ### Color limits and extensions
 # As seen, Matplotlib allows for colorbar customizations.
 # Colorbar is an instance of plt.Axes, so all the axes and tick formatting already used are applicable
+
+# for instance, can set color limits and indicate out-of-bounds vals with traingular arrow
+# accomplished using the "extend" property
+# see the following example for a use case:
+
+# ----------------------------------------
+# make noise in 1% of the image pixels
+speckles = (np.random.random(I.shape) < 0.01)
+I[speckles] = np.random.normal(0, 3, np.count_nonzero(speckles))
+
+plt.figure(figsize(10, 3.5))
+
+plt.sublplot(1, 2, 1)
+plt.imshow(I, cmap='RdBu')
+
+# ----------------------------------------
