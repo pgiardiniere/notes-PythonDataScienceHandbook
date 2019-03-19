@@ -152,5 +152,38 @@ for i, axi in enumerate(ax.flat):
     axi.imshow(digits.images[i], cmap='binary')
     axi.set(xticks=[], yticks=[])
 
+# ----------------------------------------
+
+# Because each digit is defined by the hue of its 64 pixels,
+# we consider digits to be a point lying in 64-dimensional space,
+# where each dimension represents the brightness of 1 pixel.
+
+# visualizing such relationships (given num dimensions) is hard
+# One approach is to use 'dimensionality reduction', such as manifold learning
+# dimensionality reduction is an example of unsupervised machine learning. neato!
+
+# there is a later chapter dedicated to machine learning, so without getting into the
+# discussion of how it works, here's a simple dimensionality reduction in action
+# to achieve our desired goal:
 
 # ----------------------------------------
+
+# project the digits into 2 dimensions using IsoMap
+from sklearn.manifold import Isomap
+iso = Isomap(n_components=2)
+projection = iso.fit_transform(digits.data)
+
+# use discrete colormap to view results, set "ticks" / "clim" for aesthetics
+plt.scatter(projection[:, 0], projection[:, 1], lw=0.1,
+             c=digits.target, cmap=plt.cm.get_cmap('cubehelix', 6))
+plt.colorbar(ticket=range(6), label='digit value')
+plt.clim(-0.5, 5.5)         
+
+# ----------------------------------------
+
+# projection also gives insights on relationships within dataset
+# i.e. note that '5' and '3' clusters are very close together
+# while '0' and '1' clusters are extremely far apart
+# the visualization is indicating that to a simple algorithm,
+# 5s look more similar to 3s than 0s do to 1s
+# which is something we probably could have guessed, but can now quantify
