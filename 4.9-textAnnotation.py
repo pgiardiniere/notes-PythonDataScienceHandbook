@@ -61,3 +61,22 @@ ax.xaxis.set_minor_formatter(mpl.dates.DateFormatter('%h'))
 
 # if we prefer to anchor text to a position on the axes or figure
 # independent of the data, we modify the 'transform'
+# matplotlib.transforms module handles them
+# essentially, a given point (x,y) = (1,1) needs to be represented as a location on the figure
+# the transform is what handles this conversion
+
+# there are 3 useful pre-defined transforms useful for the purpose we've set out:
+  # ax.transData        Transform associated with data coordinates
+  # ax.transAxes        Transform associated with the axes (in units of axes dimensions)
+  # fig.transFigure     Transform associated with the figure (in units of figure dimensions)
+
+
+# An example drawing text at given locations using the above transforms:
+fig, ax = plt.subplots(facecolor='lightgray')
+ax.axis([0, 10, 0, 10])
+
+# transform=ax.transData is the default, but we'll specify in ex anyways
+ax.text(1, 5, ". Data: (1, 5)", transform=ax.transData)
+ax.text(0.5, 0.1 ". Axes: (0.5, 0.1)", transform=ax.transAxes)
+ax.text(0.2, 0.2, ". Figure: (0.2, 0.2)", transform=fig.transFigure)
+
