@@ -12,7 +12,7 @@ def func2(x):
     return func1(a,b)
 
 func2(1)
-# ... it will throw division by 0 error
+# ... it will throw division by 0 error (at Default %xmode)
 
 # %xmode has 3 options:
 # Plain, Context, Verbose
@@ -20,9 +20,11 @@ func2(1)
 # Default   middle output - default option
 # Verbose   most ouput
 
-# in iPython, run '%xmode Plain'
-# then re-run 'func2(1)' and compare diff in output
-# also try '%xmode Verbose'
+# in iPython, run 
+%xmode Plain
+func2(1)
+%xmode Verbose
+func2(1)
 
 ##############################
 ### Debugging
@@ -31,7 +33,7 @@ func2(1)
 # refer to online docs if you want to learn ALL the ways of launching them. Here, only covered is 1 magic, the following...
 
 ### Convenient debugging with %debug
-# use the magic command: %debug
+%debug
 # call AFTER hitting an exception to open an interactive debugging prompt (ipdb) - right at point of exception
 #
 # can navigate thru stack with 'up', 'down'
@@ -41,16 +43,16 @@ func2(1)
 # can also set debugging to run automatically on hitting exception with '%pdb on'
 
 # try the following:
-# %xmode plain
-# %pdb on
-# func2(1)
-# ipdb > print(b)
-# ipdb > exit
+%xmode plain
+%pdb on
+func2(1)
+ipdb > print(b)
+ipdb > exit
 
 
 ### %run magic revisit
-# if you want to run an external script / file, we use %run
-# %run -d
+# if you want to debug an external script / file, we use %run -d
+%run -d
 # will run the file, but you use 'next' cmd to step through lines of code (rather than automatic execution)
 
 ############################################################
