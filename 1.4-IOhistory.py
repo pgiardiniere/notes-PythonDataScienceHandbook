@@ -19,7 +19,7 @@ math.cos(2)
 
 # Out can be used to operate on outputs of prior cmds. Say you ran the import, sin, and cos fn's in a new iPython session
 # the following will add the squares of the sin/cos:
-    # Out[2] ** 2 + Out[3] ** 2
+Out[2] ** 2 + Out[3] ** 2
 
 ########################################
 ### Underscore Shortcuts & prior outputs
@@ -32,24 +32,24 @@ math.cos(2)
 # ___   = 3rd prior output
 
 ## e.g.
-# print(_)
-# print(__)
-# print(___)
-    # again, calling this variable does not iterate/get recorded in the output, for obvious reasons (don't trip over your own feet)
+print(_)
+print(__)
+print(___)
+# again, calling this variable does not iterate/get recorded in the output, for obvious reasons
 
 ########################################
 ### Suppressing Output
 # to suppress output, add a semicolon to end of line. Like the following example:
-# math.sin(2) + math.cos(2);
+math.sin(2) + math.cos(2);
     # result is computed silently, output displayed neither on screen or in 'Out' dict
     # recall also that semicolons are only used in .py files to executing multiple statements on one line, i.e. rarely.
 
 # common use: suppressing output when plotting information (e.g. with Matplotlib)
 
 ########################################
-### Related Magic Commands
-# %history
+### Related Magic Command - history
+%history
 # pulls multiple prevoius Inputs at once. Example:
-# %history -n 1-4
-
-# return more use cases by looking up the documentation with %history?
+%history -n 1-4
+# return more use cases by looking up the documentation with
+%history?

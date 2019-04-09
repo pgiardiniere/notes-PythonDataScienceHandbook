@@ -8,7 +8,7 @@
 # Ctrl-a    Cursor to beginning of line
 # Ctrl-e    Cursor to end of line
 
-### Text cutting / pasting
+### Text cutting / pasting(yank)
 # Ctrl-k    Cut from cursor to line end
 # Ctrl-u    Cut from cursor to line begin
 # Ctrl-y    Yank (paste) text last pulled with either of the above 2
@@ -26,8 +26,8 @@ def square(a):
     """Returns the square of a."""
     return a ** 2
 
-# square?       # comment b/c not valid python
-# square??
+square?
+square??
 
 # then, Ctrl-r <squa>. 
 # Hit Ctrl-r again to cycle from most recent occurrence to furthest back
