@@ -84,3 +84,19 @@ for axi in ax.flat:
     axi.yaxis.set_major_locator(plt.MaxNLocator(3))
 fig
 
+#########################
+### fancy tick formats
+# matplotlibs default formatting is iight
+# consider following plot of sine/cosine:
+
+# Plot sine/cosine curves
+fig, ax = plt.subplots()
+x = np.linspace(0, 3 * np.pi, 1000)
+ax.plot(x, np.sin(x), lw=3, label='Sine')
+ax.plot(x, np.cos(x), lw=3, label='Cosine')
+
+# set up grid, legend, and limits
+ax.grid(True)
+ax.legend(frameon=False)
+ax.axis('equal')
+ax.set_xlim(0, 3 * np.pi)
