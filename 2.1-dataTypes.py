@@ -1,126 +1,124 @@
-### Python data types vs C
-# As python is dynamically typed, we don't assign types to variables on declaration
-# We can also switch a variable of type int to String seamlessly
-# i.e.: 
-# x = 4
-# x = 'four'
-# works without error, where C would throw an error due to type mismatch
-
-
+##################################################
 ### Python ints are more than ints
 # Comparison: Python code and C w/ re. to data types
 
 # /* C code */
-# int result = 0;
-# for(int i=0; i<100; i++){
-#     result += i;
-# } 
+int result = 0;
+for(int i=0; i<100; i++){
+    result += i;
+} 
 # note how all data types are explicitly stated
 
 # Python code
 result = 0
 for i in range(100):
     result += i
-# where here all data types are inferred, also allows us to assign 'result' to a string without error
+# where here all data types are inferred, allowing us to e.g. assign 'result' to a string without error
+
 
 # The standard python implementation is written in C
-# SO, all python objects (and everything in Python is an object) is deep down
-# just a compound C structure, i.e. the following int:
-x = 1000
-# ... actually creates a reference to a compound C structure, which when expanded, looks like this:
+# everything in Python is an object, all python objects are just compound C structures, 
 
-# struct _longobject {
-#     long ob_refcnt;
-#     PyTypeObject *ob_type;
-#     size_t ob_size;
-#     long ob_digit[1];
-# };
+# i.e. the following variable:
+x = 1000
+# has the following expanded C structure:
+struct _longobject {
+    long ob_refcnt;
+    PyTypeObject *ob_type;
+    size_t ob_size;
+    long ob_digit[1];
+};
 
 # So we see the following integer actually contains these things:
-    # ob_refcnt, a reference count that helps Python silently handle memory allocation and deallocation
-    # ob_type, which encodes the type of the variable
-    # ob_size, which specifies the size of the following data members
-    # ob_digit, which contains the actual integer value that we expect the Python variable to represent.
+    ob_refcnt   # a reference count that helps Python silently handle memory allocation and deallocation
+    ob_type     # which encodes the type of the variable
+    ob_size     # which specifies the size of the following data members
+    ob_digit    # which contains the actual integer value that we expect the Python variable to represent.
 
-# direct quote:
-    # Notice the difference here: a C integer is essentially a label for a position in memory 
+# Notice the difference here: 
+    # a C integer is a label for a position in memory
     # whose bytes encode an integer value. 
-    # A Python integer is a pointer to a position in memory containing all the Python object information, 
-    # including the bytes that contain the integer value.
+    # --------------------------------------------------
+    # a Python integer is a pointer to a position in memory containing
+    # all the Python object information, including the bytes for int value
 
+
+##################################################
 ### Python lists are more than lists
-# consider that EVERY python object must contain this additional reference information in order to allow
-# dynamic reassignment of variables.
+# recall every python object must contain this reference information
+# to allow dynamic reassignment of variables.
+
 # now consider a basic Python list, which can contain heterogenous data types
-# every index of the list must contain a reference to an object with all the 'boilerplate' stuff discussed
+# every index of the list must also contain a reference to an object with all those types
 # in the above notes on ints
 
-# it would be much more efficient instead to have an array containing a single type, where each
-# position inside the array gets the same information from a general Py Object Header (contained in
-# the first position)
+# arrays of single types are more efficient, as we can then use a general Py Object Header
+# (contained in the first position) which all subsequent indeces reference.
 
 # 2 ways of achieving single type arrays:
-# 1) built-in 'array' type in python
-# 2) NumPy arrays (np.array[])
+    # Built-in 'array' type in python       not used
+    # NumPy arrays (np.array[])             quite useful
 
-### 1-built-in method
+# 1-built-in method
 import array
 L = list(range(10))
 A = array.array('i', L)
 print(A) 
-# this is well and good, but numpy achieves the same efficiency, while also containing efficient data operations/methods
+# numpy achieves the same efficiency, and has the additional data operations/methods
 
-### NumPy arrays (np.array[])   --- rest of notes will concern these arrays only
+##################################################
 ### NumPy Array construction and manipulation
+# recall np arrays are single-type, numpy infers 1 type from the data
 import numpy as np
 np.array([1,4,2,5,3])
-# recall these must be single-type, and np is inferring type from the data
-# if mixed types, an attempt at upcasting will be made (see float ex below)
+
+# If mixed types deteced, upcasting attempt is made (e.g. floats + ints == floats)
 np.array([3.14, 2, 4])
+
 # to explicitly set type, use 'dtype' keyword
 np.array([1, 2, 3, 4], dtype='float32')
+
 # also, unlike lists, we can initialize a multi-dimensional array
 # inner lists (i+3) are treated as rows  
 np.array([range(i, i+3) for i in [2,4,6]])
-# it pulls the value at index i from array, then in the current array position we are constructing,
-# it places an array of range of vals from i to i+3. the result is a neat little upwards counting 2d arr
+# it pulls the value at index i from array, then in the current (new) array position,
+# it nests an array with the range of vals from i to i+3. Creates upwards counting 2d arr
 
-## Creating arrays from scratch:
-# np contains some built-in constructor methods that can be useful:
-# 
+
+### Creating arrays from scratch:
+# np contains some pre-built constructor methods that can be useful:
+
 # create len=10 arr filled with 0s
 np.zeros(10, dtype=int)
+
 # create a 3x5 arr filled with 1s (floating point type)
 np.ones((3,5), dtype=float)
-# create a 3x5 arr filled with 3.14s 
+
+# create a 3x5 arr filled with "3.14"
 np.full((3,5), 3.14)
 
 # create an array filled with linear seq, counting from 0 to 20, stepping by 2s
-np.arange(0,20,2)
+np.arange(0, 20, 2)
+
 # create an array of 5 values, evenly spaced, between 0 and 1
 np.linspace(0, 1, 5)
 
-# create a 3x3 array of uniformly distributed random values 
-# (between 0 and 1)
+# create a 3x3 array of uniformly distributed random values (between 0 and 1)
 np.random.random((3,3))
-# create a 3x3 array of normally  distributed random values 
-# with mean 0 and St.Dev 1
-np.random.normal((0, 1, (3,3)))
+
+# create a 3x3 array of normally  distributed random values with mean 0 and St.Dev 1
+np.random.normal(0, 1, (3,3))
+
 # create a 3x3 array of random integers in the interval [0, 10)
 np.random.randint(0, 10, (3,3))
+
 # create a 3x3 identity matrix
 np.eye(3)
-# create an unintialized array of 3 ints
-# (values will be whatever happens to already exist at that mem location)
+
+# create an unintialized array of 3 ints (vals will be whatever already exists at mem location)
 np.empty(3)
 
 ## np standard data types
 # np is built in C, so it shares same data types
 # you can see a list at the end of the chapter, or refer to C documentation
-
-
-
-
-
-
 
