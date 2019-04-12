@@ -1,7 +1,7 @@
 ### NumPy array basics
 # essentially all data manipulation in python is manip. of np arrays
 # esp. when you consider pandas is a newer module, built on the base of np arrays
-#
+
 # types of manipulations covered:
     # Attributes of arrays
     # Indexing of arrays

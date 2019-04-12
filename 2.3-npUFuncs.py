@@ -46,6 +46,7 @@ x = np.arange(9).reshape((3,3))
 # as a general rule, vectorized computations are magnitudes faster than Python loops
 # try to replace loops with vectorized expressions like the above when possible
 
+
 ##############################
 ### Exploring additional UFuncs 
 # Two types, Unary ufuncs and Binary ufuncs
@@ -137,8 +138,10 @@ special.erf(x)
 special.erfc(x)
 special.erfinv(x)
 
-
+###################################
 ### Advanced UFunc Features
+# 3 topics: Out, Aggregates, Outer Products
+
 ## Specifying output: using "out"
 # We can directly specify mem location to store result of a calculation using "out"
 x = np.arange(5)
