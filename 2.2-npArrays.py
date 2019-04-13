@@ -1,6 +1,6 @@
 ### NumPy array basics
 # essentially all data manipulation in python is manip. of np arrays
-# esp. when you consider pandas is a newer module, built on the base of np arrays
+# esp. when you consider e.g. pandas (newer lib) extends on a base of np arrays
 
 # types of manipulations covered:
     # Attributes of arrays
@@ -20,15 +20,15 @@ x1 = np.random.randint(10, size=6)
 x2 = np.random.randint(10, size=(3,4))
 x3 = np.random.randint(10, size=(3,4,5))
 
-# attributes each array contains:
+# attributes each numpy array contains:
     # ndim      number of dimensions
     # shape     size of each dimension
     # size      total size of array
-    
     # dtype     data type of array    
     # itemsize  size (bytes) of an arbitrary array element
     # nbytes    size (bytes) of the entire array
 
+# print each respective example of array attribute:
 print("x3 ndim: ", x3.ndim)         # returns: 3
 print("x3 shape:", x3.shape)        # returns: (3, 4, 5)
 print("x3 size:", x3.size)          # returns: 60
@@ -56,10 +56,15 @@ x2[0, 0] = 3.14     # however, type must be constant, so this will get SILENTLY 
 ##############################
 ### Array slicing
 # we can access single array elements with square brackets
-# we can slice multiple array elements (or Subarrays) with : inside of square brackets
-# for array x:
-# x[start:stop:step]
-# default values: start=0 stop='size of dimension (length)', step=1
+# we can slice multiple array element (or Subarrays) with : inside of square brackets
+
+# e.g. for an array 'x'
+    # x[start:stop:step]
+
+# default values: 
+    # start = 0 
+    # stop  = length (i.e. size of dimension || arr.len)
+    # step  = 1
 
 ## Slicing 1d subarrays
 x = np.arange(10)
@@ -98,7 +103,6 @@ x2_sub = x2[:2, :2]             # create a subarray of x2
 x2_sub                          # return contents of subarray
 x2_sub[0,0] = 9001              # modify subarray contents
 x2                              # return MODIFIED x2 data
-
 
 ## Creating copies of arrays: copy()
 # when we DO desire an independent copy to be made of an array/subarray, we use the copy() method

@@ -1,7 +1,6 @@
 ### Computation on NumPy Arrays: Universal Functions
-# NumPy array computation can be very fast, or very slow
-# if you try to use them in a more traditional loop-style manner, it's very slow
-# Vectorized operations are fast though, these are generally implemented in np ufuncs
+# Using NP arrays in the traditional loop-style manner, is VERY slow
+# Vectorized operations are preferred, and generally implemented in ufuncs
 
 # here's a traditional loop-based approach to operating on arr values to demonstrate
 import numpy as np
@@ -14,14 +13,13 @@ def compute_reciprocals(values):
     return output
 
 values = np.random.randint(1, 10, size=5)
-compute_reciprocals(values)     # remember to precede with %timeit in ipython
-
-# we can then time execution with a %timeit magic
+%timeit compute_reciprocals(values)
 
 # now, consider a case with a much bigger array of values:
 big_array = np.random.randint(1, 100, size=1000000)
-compute_reciprocals(big_array)  # remember to precede with %timeit in ipython
-    # in my case, returned "1.63 s +- 3.97 ms per loop ..."
+%timeit compute_reciprocals(big_array)
+
+# check the vals in iPython, note that it's orders of magnitude slower than it should be in both cases
 
 ##############################
 ### UFuncs introduction
@@ -32,9 +30,7 @@ compute_reciprocals(big_array)  # remember to precede with %timeit in ipython
 # sample 1: ufunc operation b/w Scalar type and Array
 compute_reciprocals(values)
 1.0 / values
-
-(1.0 / big_array)    # remember to preceded with %timeit in ipython
-    # in my case, returned "4.11 ms +- 2.83 us per loop ..."
+%timeit (1.0 / big_array)
 
 # sample 2: ufunc operation b/w Array type and Array
 np.arange(5) / np.arange(1, 6)
@@ -50,7 +46,6 @@ x = np.arange(9).reshape((3,3))
 ##############################
 ### Exploring additional UFuncs 
 # Two types, Unary ufuncs and Binary ufuncs
-
 
 ## Array Arithmetic
 # NumPy ufuncs are nice, they make use of Python's native arithmetic operators
@@ -73,7 +68,7 @@ x % 2   # modulus (remainder)
 np.add(x, 2)    # long form
 x + 2           # wrapper equivalent
 
-# can see a partial list of the long-form uFunc arithmetic utilies used above in the chapter text
+# can find a partial list of the long-form uFunc arithmetic utilies used above in the chapter text
 
 
 ## Absolute Value
@@ -155,6 +150,7 @@ y
 # compare speed between statement 2 and below, for a larger op, to see savings of not having temp array creation & copy
 y[::2] = 2 ** x
 
+
 ## Aggregates
 # With reduce() method, we can repeatedly execute a given operation to 
 # all elements of the array, until a single result remains
@@ -170,6 +166,7 @@ np.multiply.accumulate(x)
 # note that there are dedicated NumPy funcs for these particular cases
 # np.sum, np.prod, np.cumsum, np.cumprod - respectively
 
+
 ## Outer products
 # Any ufunc can compute the output of all pairs of two different inputs with outer()
 x = np.arange(1, 6)
@@ -177,4 +174,4 @@ np.multiply.outer(x, x)
 
 # ufunc.at() and ufunc.reduceat() will be covered later in Fancy Indexing, and build on this idea
 
-# additional ufuncs (full list) available at NumPy and SciPy documentation
+# additional ufuncs available in the NumPy/SciPy docs

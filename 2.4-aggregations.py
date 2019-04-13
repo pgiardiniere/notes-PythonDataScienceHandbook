@@ -1,7 +1,6 @@
 ### Aggregations: Min, Max, everything in between
 # In brief, about to cover typical stuff like means, stdevs, sums, products
-# medain, min, max, quantiles, etc.
-# 
+# median, min, max, quantiles, etc.
 
 ## Summing vals in arr
 import numpy as np
@@ -15,6 +14,7 @@ np.sum(L)   # numpy sum - executes in Compiled mode, much faster
 big_array = np.random.rand(1000000)
 sum(big_array)
 np.sum(big_array)
+
 
 ## Minimum and Maximum
 # min(), np.min()
@@ -63,8 +63,7 @@ np.all          # evaluate whether all elements are true
 ## example: what is avg height of the US presidents
 # NOTE I copied over the 'data' directory from the book into notes dir, can complete example work
 
-# the following is only executable in iPython directly
-# !head -4 data/president_heights.csv       # or not... doesn't work there either
+# !head -4 data/president_heights.csv
 import pandas as pd
 data = pd.read_csv('data/president_heights.csv')    # reads csv into memory
 heights = np.array(data['height(cm)'])              # takes 'heights' column from csv var
@@ -80,13 +79,10 @@ np.median(heights)
 np.percentile(heights, 75)
 
 ## we can also visualize with Matplotlib
-# again, another line which errors out below
-# %matplotlib inline
+%matplotlib inline
 import matplotlib.pyplot as plt
 import seaborn; seaborn.set()   # set plot style
 plt.hist(heights)
 plt.title('Height Distribution of US Presidents')
 plt.xlabel('height (cm)')
 plt.ylabel('number')
-# not printing anything ... the above might be dependent on running in a Jupyter session
-
