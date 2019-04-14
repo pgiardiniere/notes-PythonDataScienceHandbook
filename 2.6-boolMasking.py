@@ -13,13 +13,15 @@ rainfall = pd.read_csv('data/Seattle2014.csv')['PRCP'].values
 inches = rainfall / 254.0   # 1/10mm -> inches conversion
 inches.shape                # (365, 0) - daily measurement for 1 yr
 
-## omitting matplotlib snippet,
-## do not have environment set up for it yet
-## wait until ch 4 to revisit
+%matplotlib inline 		# iPython
+import matplotlib.pyplot as plt
+import seaborn; seaborn.set()
+
+plt.hist(inches, 40)
 
 # histogram plot is good to see general shape of data
 # but for specific questions (e.g. num rainy days, avg precip on them, etc.)
-# we'll use masking to quickly answer
+# use masking to quickly answer
 
 ###################################
 ### Comparison Operators as ufuncs
@@ -80,7 +82,7 @@ np.sum((inches > 0) & (inches > .2))
 ##############################
 ### Boolean Arrays as Masks
 # In prior section, used aggregates computed directly on Boolean arrays
-# But instead, we can use Boolean arrays as masks in order to select subsets of data
+# Can also use Boolean arrays as masks in order to select subsets of data
 
 x
 x < 5       # return the boolean array for condition
@@ -107,6 +109,6 @@ np.median(inches[rainy & ~summer])  # median precipitation on non-summer days
 # using "and" or "or" asks Python to treat the object act a single Bool entity
 
 # this has implications which are interesting (see chapter for exact details)
-# the most important take-away is that when dealing specifically with numpy arrays, we always prefer 
-# the bitwise, symbol operators "&" or "/"
+# importantly, when dealing specifically with numpy arrays,
+# always use the bitwise, symbol operators "&" or "/"
 

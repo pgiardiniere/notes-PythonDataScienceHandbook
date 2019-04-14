@@ -8,15 +8,15 @@ a = np.array([0, 1, 2])
 b = np.array([5, 5, 5])
 a + b
 
-# first example of broadcasting - add a scalar to an array (equiv. to above)
+# ex1: add a scalar to an array (equiv. to above)
 a + 5
 
-# second example - add a 1d array to a 2d array:
+# ex2: add a 1d array to a 2d array:
 M = np.ones((3, 3))
 M
 M + a   # a is streched (i.e. broadcasted) across the second dimension to match M's shape
 
-# third example, more complex. Simultaneous broadcasting of both arrays
+# ex3: Simultaneous broadcasting of both arrays
 a = np.arange(3)
 b = np.arange(3)[:, np.newaxis]     # form into 2d array of 1 column
 a
@@ -29,13 +29,17 @@ a + b
 ### Rules of broadcasting:
 # In brief:
 
-# 1) If arrays differ in their number of dimensions, the shape of one with fewer is padded with ones on its leading (left) side
-# 2) If the shape of the two arrays does not match in any dimension, the array with shape equal to 1 in that dim is stretched to match the other shape
-# 3) If in any dimenstion the sizes disagree and neither is equal to 1, an error is raised
+# 1) If arrays differ in their number of dimensions, the shape of one with 
+#    fewer dimensions is padded with ones on its leading (left) side
+# 2) If the shape of the two arrays does not match in any dimension, the array 
+#    with shape equal to 1 in that dim is stretched to match the other shape
+# 3) If in any dimenstion the sizes disagree and neither is equal to 1, 
+#    an error is raised
 
-# further discourse on these rules found in examples below
+# examples below to demonstrate:
 
-### Broadcasting ex 1: (demonstrates rules 1, 2)
+# ------------------------------
+### Broadcasting ex1: (demonstrates rules 1, 2)
 M = np.ones((2, 3))
 a = np.arange(3)
 
@@ -54,7 +58,8 @@ a.shape     # returns (3,)
 M + a   # returns: ([[1., 2., 3.],
         #            [1., 2., 3.]]) 
 
-### Broadcasting ex 2:
+# ------------------------------
+### Broadcasting ex2:
 a = np.arange(3).reshape((3, 1))
 b = np.arange(3)
 
@@ -72,8 +77,8 @@ b.shape     # returns (3,)
 ## the result matches, and shapes are compatible. operation can run without error
 a + b
 
-
-### Broadcasting ex 3: (demonstrates incompatible shapes, rule 3)
+# ------------------------------
+### Broadcasting ex3: (demonstrates incompatible shapes, rule 3)
 M = np.ones((3, 2))
 a = np.arange(3)
 
@@ -118,5 +123,13 @@ X_centered.mean(0)
 
 ## Plotting a 2d function
 # can display images based on two-dimensional functions
+x = np.linspace(0, 5, 50)
+y = np.linspace(0, 5, 50)[:, np.newaxis]
 
+z = np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
 
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+plt.imshow(z, origin='lower', extent=[0, 5, 0, 5], cmap='viridis')
+plt.colorbar()
