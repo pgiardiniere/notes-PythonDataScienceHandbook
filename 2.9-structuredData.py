@@ -100,9 +100,9 @@ data_rec = data.view(np.recarray)
 data_rec.age
 
 # drawback being: extra overhead involved in accessing fields
-# %timeit data['age']
-# %timeit data_rec['age']
-# %timeit data.age
+%timeit data['age']
+%timeit data_rec['age']
+%timeit data.age
 
-
-# again, know that Pandas will be the generally preferred library for compound data types / structured arrays
+# again, know that Pandas will be the generally preferred lib
+# for compound data types / structured arrays

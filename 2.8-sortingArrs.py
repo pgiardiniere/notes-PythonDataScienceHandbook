@@ -71,10 +71,14 @@ np.partition(X, 2, axis=1)
 ## Example: k-Nearest Neighbors:
 # create random set of 10 points on 2d plane
 X = rand.rand(10, 2)
-    ### matplotlib stuff for visualization ###
 
-# compute distance between each pair of points (where distance = squared difference of each dimension)
-# broadcasting! (chapter includes following line broken into steps as well)
+%matplotlib inline
+import matplotlib.pyplot as plt
+import seaborn; seaborn.set()
+plt.scatter(X[:, 0], X[:, 1], s=100);
+
+# compute distance between each pair of points (demonstrates broadcasting)
+#       where distance = squared difference of each dimension
 dist_sq = np.sum((X[:, np.newaxis, :] - X[np.newaxis, :, :]) ** 2, axis=-1) 
 # confirm point - (self) == 0
 dist_sq.diagonal()
@@ -89,8 +93,15 @@ nearest
 K = 2
 nearest_partition = np.argpartition(dist_sq, K + 1, axis=1)
 
-### more matplotlib visualization ###
+plt.scatter(X[:, 0], X[:, 1], s=100)
+# draw lines from each point to its two nearest neighbors 
+K = 2
+
+for i in range(X.shape[0]):
+    for j in nearest_partition[i, :K+1]
+        # plot a line from X[i] to X[j]
+        # use zip magic to make it work
+        plt.plot(*zip(X[j], X[i]), color='black')
 
 # note: for VERY large nearest neighbor searches, you may instead opt for "Scikit-learn" lib for tree-based / approximate algs 
 # for even greater efficiency
-
