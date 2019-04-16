@@ -38,7 +38,7 @@ X[row[:, np.newaxis], col]
 # same thing with broadcasting, we can apply mathematical operations
 row[:, np.newaxis] * col
 
-
+##############################
 ### Combined indexing
 # if you use Fancy indexing for part of your access arg, you can still use other forms of access in conjunction with it
 # e.g. simple indexing, slicing, and masking
@@ -47,7 +47,7 @@ X[1:, [2, 0, 1]]                            # Slicing
 mask = np.array([1, 0, 1, 0], dtype=bool)
 X[row[:, np.newaxis], mask]                 # Masking
 
-### Example: selecting random points
+## Example: selecting random points
 # Common use of fancy indexing: select subsets of rows in a matrix
 # Consider an arbitrary number of data points N for a data set with arbitrary number of dimsnesions D 
 # (in this case, a 2d normal distribution)
@@ -57,7 +57,6 @@ cov = [[1, 2],
 X = rand.multivariate_normal(mean, cov, 100)
 X.shape     # returns (100, 2)
 
-## once again, matplotlib materials. Haven't gotten to the chapter to properly configure this stuff
 import matplotlib.pyplot as plt
 import seaborn; seaborn.set() # for plot styling
 
@@ -73,6 +72,7 @@ selection.shape
 plt.scatter(X[:, 0], X[:, 1], alpha = 0.3)
 plt.scatter(selection[:, 0], selection[:, 1], facecolor='none', s=200) 
 
+##############################
 ### Modifying values with Fancy Indexing
 # In the following example, we use an array of indeces to modify the data at those indeces
 x = np.arange(10)
@@ -101,4 +101,39 @@ x                   # [0. 0. 1. 2. 3. 0. 0. 0. 0. 0.]
 # reduceat() is not covered here, but similar in application
 
 ### example: binning data
-# revisit later after Matplotlib ch
+np.random.seed(42)
+x = np.random.randn(100)
+
+# compute a histogram by hand
+bins = np.linspace(-5, 5, 20)
+counts = np.zeros_like(bins)
+# find the appropriate bin for each x
+i = np.searchsorted(bins, x)
+# add 1 to each of these bins
+np.add.at(counts, i, 1)
+
+# count now reflect a number of points within each bin - i.e. a basic histogram
+# plot results:
+plt.plot(bins, counts, linestyle='steps');
+
+
+# creating bespoke histograms like this is silly, use plt.hist()
+plt.hist(x, bins, histtype='step');
+
+# function creates nearly identical plot to the first one, in one line.
+# To compute binning, matplotlib uses np.histogram func, which is similar.
+# comparison:
+print("NumPy routine:")
+%timeit counts, edges = np.histogram(x, bins)
+
+print("Custom routine:")
+%timeit np.add.at(counts, np.searchsorted(bins, x), 1)
+
+# the custom routine outperforms, but only b/c this use case is over-simplistic
+# try again with larger dataset:
+x = np.random.randn(1000000)
+print("NumPy routine:")
+%timeit counts, edges = np.histogram(x, bins)
+
+print("Custom routine:")
+%timeit np.add.at(counts, np.searchsorted(bins, x), 1)
