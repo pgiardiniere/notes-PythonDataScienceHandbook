@@ -114,5 +114,59 @@ data['density'] = data['pop'] / data['area']
 data
 
 
-## DataFrame as a two-dimensional array
-# 
+## DataFrame as two-dimensional array
+# Can view DataFrame as enhanced 2d arr, many familiar arr-like methods/routines
+
+# examine raw underlying data using 'values' attribute:
+data.values
+
+# transpose full DataFrame to swap rows and columns:
+data.T
+
+# indexing is Dictionary-style, not NP-array-style. 
+    # Passing a single  index  to an array    accesses a row:
+data.values[0]
+    # Passing a single "index" to a DataFrame accesses a column:
+data['area']
+
+# to get array-style indexing, use another convention
+# it's same ones used earlier:
+# loc, iloc, ix
+
+# using iloc indexer, can index the underlying array as if an NP arr (i.e. implicit style)
+    # DataFrame index and column labels are maintained in result:
+data.iloc[:3, :2]
+
+# using loc indexer, can index the underlying array 9n array-like style w/ explicit index/col names
+    # DataFrame index and column labels are maintained in result:
+data.loc[:'Illinois', :'pop']
+
+# using ix indexer, can get a hybrid of the two approaches:
+data.ix[:3, :'pop']
+
+# NOTE: ix is still subject to the implicit/explicit confusion in prior note section
+
+# using these 3 indexers, can use the familiar NP-style data access patterns
+# loc indexer, for example, can combine masking & fancy indexing:
+data.loc[data.density > 100, ['pop', 'density']]
+
+# any indexing conventions may be used to set/modify vals like NP
+data.iloc[0, 2] = 90
+data
+
+# (author recommends practicing to gain fluency/memorize these shorthand techniques)
+
+
+## Additional indexing conventions
+# A few sticking points which can be useful
+
+# 'indexing' refers to Columns, 
+# 'slicing' refers to rows
+data['Florida':'Illinois']  # slice
+data[1:3]                   # slice by row number, rather than index
+
+# direct masking operations are also interpreted row-wise (not col-wise)
+data[data.density > 100]
+
+# these 2 conventions are syntactically similar to NP arrs, and quite useful,
+# but are at odds with PD conventions
