@@ -57,3 +57,57 @@ A.add(B, fill_value=0)
 
 
 ## Index Alignment in DataFrame
+# similar alignment on both columns AND indices when using DataFrames:
+A = pd.DataFrame(rng.randint(0, 20, (2, 2)), columns=list('AB'))
+A
+B = pd.DataFrame(rng.randint(0, 10, (3, 3)), columns=list('BAC'))
+B
+A + B
+# note that indices are aligned correctly irrespective of order in objects,
+# and indices in the result are sorted
+
+# as before, can use object method with "fill_value" attribute to replace NaN
+# here, we fill with the mean of all values stored in "A" instead of 0
+fill = A.stack().mean()
+A.add(B, fill_value=fill)
+
+
+# Table: Python operators and equivalent PD Object methods:
+#   +   add()
+#   -   sub(), subtract()
+#   *   mul(), multiply() 
+#   /   truediv(), div(), divide()
+#   //  floordiv()
+#   %   mod()
+#   **  pow()
+
+
+##############################
+### Ufuncs: Operations Between DataFrame and Series
+# index & col alignment is similar when crossing DF and Series
+
+# Remember: as DF is to Series in Pandas
+#           1D arr is to 2d Arr in NumPy
+
+# Find difference between a two-dimensional array and one of its rows:
+A = rng.randint(10, size=(3, 4))
+A
+A - A[0]
+
+# Per NP broadcasting rules, subtraction b/w 2D arr and row is done row-wise
+
+# In Pandas, convention similarly operates row-wise by default:
+df = pd.DataFrame(A, columns=list('QRST'))
+df - df.iloc[0]
+
+# to operate column-wise, use object methods and specify "axis" keywork
+df.subtract(df['R'], axis=0)
+
+# as before, indices are automatically aligned between 2 elements:
+halfrow = df.iloc[0, ::2]
+halfrow
+df - halfrow
+
+# as mentioned, automatic preservation + alignment of indices/cols means
+# operations on data in Pandas will maintain data context
+# more seamlessly than NP arrs
