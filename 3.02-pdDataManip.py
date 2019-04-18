@@ -4,7 +4,8 @@
 
 ##############################
 ### Data Selection in Series
-# As discussed, PD Series objects are similar to 1d NP arrays, and Python dicts
+# As discussed, PD Series objects are similar to 1d NP arrays, 
+# and Python dicts
 
 
 ## Series as Dictionary
@@ -48,8 +49,70 @@ data[['a', 'e']]
 
 ## Indexers: loc, iloc, ix
 # Slicing and indexing conventions are weird
-data[1]     # uses explicit indices     - INCLUSIVE
-data[1:3]   # uses implicit indices     - EXCLUSIVE
-
 data = pd.Series(['a', 'b', 'c'], index=[1, 3, 5])
 data
+# uses explicit indices - INCLUSIVE
+data[1]
+# uses implicit indices - EXCLUSIVE
+data[1:3]
+
+# so, explicit index when indexing
+# and implicit index when slicing
+
+# because of this confusion, PD provides special "indexer" attributes
+# they explicitly expose indexing schemes. NOT methods, just attributes
+
+# "loc"  allows indexing and slicing that always refs EXPLICIT index
+data.loc[1]
+data.loc[1:3]
+
+# "iloc" allows indexing and slicing that always refs IMPLICIT index
+data.iloc[1]
+data.iloc[1:3]
+
+# "ix" is hybrid, and for "Series"    objects is = to standard []-based indexing
+# it makes more sense w/  "DataFrame" objects
+
+# generally speaking, "explicit is better than implicit" in Python
+# since "loc" and "iloc" explicitly denote their nature, can help iron out confusion
+
+##############################
+### Data Selection in DataFrame
+# As discussed, PD DataFrame objects are similar to 2d NP arrays, 
+# and like dictionary of Series structures sharing the same index
+
+
+## DataFrame as a Dictionary
+# recreate the example of populations and states:
+area = pd.Series({'California': 423967, 'Texas': 695662,
+                  'New York': 141297, 'Florida': 170312,
+                  'Illinois':149995})
+pop = pd.Series({'California': 38332521, 'Texas': 26448193,
+                 'New York': 19651127, 'Florida': 19552860,
+                 'Illinois': 12882135})
+data = pd.DataFrame({'area':area, 'pop':pop})
+data
+
+# the individual Series that make up the columns of the DataFrame 
+# can be accessed via dict-style indexing of col name
+data['area']
+
+# equivalently, can use attribute-style access with col-names as strings
+data.area
+
+# proof of equivalence:
+data.area is data['area']   # evals to "True"
+
+# though the shorthand attr. is useful, does not work for all cases
+# if col names are NOT strings, or conflict with DataFrame methods, it fails
+# e.g. data.pop --- DataFrame has a pop() method 
+data.pop is data['pop']     # evals to "False"
+
+# like "Series" objects discussed earlier, dict-style syntax 
+# can be used to modify the object. e.g. Add a new column:
+data['density'] = data['pop'] / data['area']
+data
+
+
+## DataFrame as a two-dimensional array
+# 
