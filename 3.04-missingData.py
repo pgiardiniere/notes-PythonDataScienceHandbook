@@ -100,4 +100,73 @@ x               # dtype "float64"
 
 ##############################
 ### Operating on Null Values
-# 
+# Having discussed PD handling of Null, now can use methods to alter them
+# Specifically, methods for:
+    # Detecting
+    # Removing
+    # Replacing
+
+# Which are:
+    # isnull()      Generate a boolean mask indicating missing values
+    # notnull()     Opposite of "isnull()"
+    # dropna()      Return a filtered version of the data (remove NAs)
+    # fillna()      Return a copy of the data w/ missing values filled/imputed
+
+
+## DETECT null values:
+# isnull(), notnull()
+data = pd.Series([1, np.nan, 'hello', None])
+data.isnull()
+
+# Boolean masks can be used directly as "Series" or "DataFrame" index:
+data[data.notnull()]
+
+
+## DROP null values:
+# in addition to masking before, convenience methods
+# dropna()
+# fillna()
+
+# use with Series    is quite simple:
+data.dropna()
+
+# use with DataFrame is more involved:
+df = pd.DataFrame([[1,      np.nan, 2],
+                   [2,      3,      5],
+                   [np.nan, 4,      6]])
+
+# cannot drop single value from a DataFrame, only a Row or Column
+# by default, dropna() drops the ROW in which any null value is present
+df.dropna()
+
+# to specify axis (e.g. Y or cols), set axis=1 || axis='columns'
+df.dropna(axis='columns')
+
+# Of course, this is dropping good data too.
+# Say you want to preserve a row unless it's all NAs or majority NAs
+    # specify using: "how" or "thresh" parameters
+    # default: how='any'
+df[3] = np.nan
+df.dropna(axis='columns', how='all')
+
+# for finer control, 'thresh' can be specified for min num of non-NA vals
+# required to preserve the row/column:
+df.dropna(axis='columns', thresh=3)
+
+
+## FILL null values:
+# fillna() returns copy of array with null vals replaced
+data = pd.Series([1, np.nan, 2, None, 3], index=list('abcde'))
+data
+data.fillna(0)
+
+# can specify forward-fill (ffill) to propagate the previous val forward:
+data.fillna(method='ffill')
+
+# can specify back-fill (bfill) to propagate the next val backward:
+data.fillna(method='bfill')
+
+# DataFrames have similar options, with the addition of specifying axes
+df
+df.fillna(method='ffill', axis=1)
+# NOTE: seen herem, if previous val is not defined during forward fill, NA persists
