@@ -112,7 +112,7 @@ pd.MultiIndex.from_tuples([('a', 1), ('a', 2), ('b', 1), ('b', 2)])
 # Can construct from Cartesian product of single indices too (saves keystrokes)
 pd.MultiIndex.from_product([['a', 'b'], [1, 2]])
 
-# Can construct in most direct fashion by passing MultiIndex internal attributes
+# Can construct in most direct fashion by passing MultiIndex internal params as args
     # pass "levels" - a list containing available index vals for each level
     # pass "labels" - a list of lists that reference these labels
 pd.MultiIndex(levels=[['a', 'b'], [1, 2]],
@@ -120,3 +120,75 @@ pd.MultiIndex(levels=[['a', 'b'], [1, 2]],
 
 
 ## MultiIndex Level Names
+# Naming handy for larger datasets, to track meaning of index values
+# Two ways to name:
+    # Can pass the "names" argument to any of above MultiIndex constructors
+    # Can set the "names" attribute of the index after the fact
+pop
+pop.index.names = ['state', 'year']
+pop
+
+
+## MultiIndex for Columns
+# In a DataFrame, the rows/cols are completely symmetric
+# Just as rows can have multiple levels of indices, cols can too
+
+# following example demonstrates:
+# --------- example begin -----------------------
+
+# hierarchal indices and columns
+index = pd.MultiIndex.from_product([[2013, 2014], [1, 2]],
+                                   names=['year', 'visit'])
+columns = pd.MultiIndex.from_product([['Bob', 'Guido', 'Sue'], ['HR', 'Temp']],
+                                   names=['subject', 'type'])
+
+# mock some data
+data = np.round(np.random.randn(4, 6), 1)
+data[:, ::2] *= 10
+data += 37
+
+# create the DataFrame
+health_data = pd.DataFrame(data, index=index, columns=columns)
+health_data
+
+# --------- example end   -----------------------
+
+# Note there are 4 dimensions to the data in this DataFrame
+    # Subject, Measurement type, Year, Visit Number
+
+# Yet we can still get all relevant information by inputting person name:
+health_data['Guido']
+    # Yay for hierarchal indexing
+
+
+##############################
+### Indexing and Slicing a MultiIndex
+# Indexing/Slicing is designed to be intuitive, just think of added
+# indices as additional dimensions
+
+
+## Multiply-indexed Series
+pop
+
+# can access single elements by indexing w/ multiple terms:
+pop['California', 2000]
+
+# MultiIndex also supports 'partial indexing' or indexing on just 1 level
+# result is another Series, lower-level indices maintained:
+pop['California']
+
+# Partial slicing is available, so long as the MultiIndex is sorted
+pop.loc['California':'New York']
+
+# with sorted indices, partial indexing canalso be performed on lower levels 
+# by passing empty slice in the first index:
+pop[:, 2000]
+
+# other types of indexing/selection work too, such as boolean masks:
+pop[pop > 22000000]
+
+# and fancy indexing:
+pop[['California', 'Texas']]
+
+
+## Multiply-Indexed DataFrames
