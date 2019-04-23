@@ -80,3 +80,43 @@ pop_df
 # compute fraction of people under 18 by year:
 f_u18 = pop_df['under18'] / pop_df['total']
 f_u18.unstack()     # unstack() for formatting. neat!
+
+
+##############################
+### Methods of MultiIndex Creation
+# The most straightforward way to construct mutiply indexed Series or DataFrames
+# is to pass a list of 2 or more index arrays to the constructor
+df = pd.DataFrame(np.random.rand(4, 2),
+                  index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]],
+                  columns=['data1', 'data2'])
+
+# Can pass a dictionary with correctly config'd tuples as keys,
+# pandas will auto-recognize and use MultiIndex by default
+data = {('California', 2000): 33871648,
+        ('California', 2010): 37253956,
+        ('Texas', 2000): 20851820,
+        ('Texas', 2010): 25145561,
+        ('New York', 2000): 18976457,
+        ('New York', 2010): 19378102}
+pd.Series(data)
+
+
+## Explicit MultiIndex Constructors
+# sometimes you need additional flexibility only available via explicit methods
+# As example before, can construct from a list of arrays (w/ index vals at each level)
+pd.MultiIndex.from_arrays([['a', 'a', 'b', 'b'], [1, 2, 1, 2]])
+
+# Can construct it from a list of tuples (giving extended index vals of each point)
+pd.MultiIndex.from_tuples([('a', 1), ('a', 2), ('b', 1), ('b', 2)])
+
+# Can construct from Cartesian product of single indices too (saves keystrokes)
+pd.MultiIndex.from_product([['a', 'b'], [1, 2]])
+
+# Can construct in most direct fashion by passing MultiIndex internal attributes
+    # pass "levels" - a list containing available index vals for each level
+    # pass "labels" - a list of lists that reference these labels
+pd.MultiIndex(levels=[['a', 'b'], [1, 2]],
+              labels=[[0, 0, 1, 1], [0, 1, 0, 1]])
+
+
+## MultiIndex Level Names
