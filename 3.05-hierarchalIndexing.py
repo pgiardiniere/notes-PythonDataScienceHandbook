@@ -68,7 +68,7 @@ pop_df.stack()
 # with MultiIndexing, can go beyond this trivial example to store 3+ dimensions
 # in both Series and DataFrame objects
 
-# for example, may want demographic data foreach state population
+# for example, may want demographic data for each state population
 # with multiindex, its simple as just adding another column to the DF
 pop_df = pd.DataFrame({'total': pop,
                        'under18': [9267089, 9284094,
@@ -180,7 +180,7 @@ pop['California']
 # Partial slicing is available, so long as the MultiIndex is sorted
 pop.loc['California':'New York']
 
-# with sorted indices, partial indexing canalso be performed on lower levels 
+# with sorted indices, partial indexing can also be performed on lower levels 
 # by passing empty slice in the first index:
 pop[:, 2000]
 
@@ -192,3 +192,56 @@ pop[['California', 'Texas']]
 
 
 ## Multiply-Indexed DataFrames
+# from before: the example health data DataFrame
+health_data
+
+# remember columns are primary in DataFrame, 
+# So syntax for multiply-indexed Series objects applies to columns now.
+health_data['Guido', 'HR']
+
+# As with single-index case, can use loc, iloc, ix indexers (see 3.02 for notes)
+health_data.iloc[:2, :2]
+
+# each index in loc or iloc can be passed a tuple of multiple indices
+health_data.iloc[:, ('Bob', 'HR')]
+
+# CANNOT create additional slices within index tuples
+# health_data.loc[(:, 1), (:, 'HR')]      # throws an error    
+
+# 2 ways around this, first, Python has built-in slice() method
+# Better yet, Pandas has an IndexSlice object built to handle this situation
+idx = pd.IndexSlice
+health_data.loc[idx[:, 1], idx[:, 'HR']]
+
+
+##############################
+### Rearranging Multi-Indices
+# Many operations will preserve all information in the dataset, but rearrange
+# see: stack(), unstack() used before
+# can more finely control re-arrangement of data b/w hiierarchal inds/cols
+
+
+## Sorted and Unsorted Indices
+# Again, many MultiIndex slicing operations WILL fail if the index isn't sorted
+
+# ex: Create multiply indexed data (indices are not lexographically sorted)
+index = pd.MultiIndex.from_product([['a', 'c', 'b'], [1, 2]])
+data = pd.Series(np.random.rand(6), index=index)
+data.index.names = ['char', 'int']
+data
+
+# attempt to take a partial slice, results in error
+try:
+    data['a':'b']
+except KeyError as e:
+    print(type(e))
+    print(e)
+# although error message isn't obvious, it was resulted from MultiIndex unsorted
+
+# simple Pandas convenience routines to sort:
+    # sort_index()
+    # sortlevel()
+data = data.sort_index()
+data
+data['a':'b']
+
