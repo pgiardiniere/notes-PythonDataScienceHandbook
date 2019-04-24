@@ -218,7 +218,7 @@ health_data.loc[idx[:, 1], idx[:, 'HR']]
 ### Rearranging Multi-Indices
 # Many operations will preserve all information in the dataset, but rearrange
 # see: stack(), unstack() used before
-# can more finely control re-arrangement of data b/w hiierarchal inds/cols
+# can more finely control re-arrangement of data b/w hierarchal inds/cols
 
 
 ## Sorted and Unsorted Indices
@@ -236,12 +236,73 @@ try:
 except KeyError as e:
     print(type(e))
     print(e)
-# although error message isn't obvious, it was resulted from MultiIndex unsorted
+# error thrown & caught due to MultiIndex being unsorted
 
 # simple Pandas convenience routines to sort:
     # sort_index()
     # sortlevel()
 data = data.sort_index()
 data
-data['a':'b']
+data['a':'b']       
 
+
+## Stacking and Unstacking Indices
+# can convert datasets from stacked multi-index to 2D representations
+# in addition to prior use of unstack(), can optionally specify level to use:
+pop
+pop.unstack(level=0)    # Years  are now Columns
+pop.unstack(level=1)    # States are now Columns
+
+# stack() is the inverse of unstack, see example:
+pop.unstack().stack()   # note output identical to pop
+
+
+## Index setting and resetting
+# Another way to rearrange hierarchal data is to turn index labels into cols
+# reset_index()
+
+# call reset_index() on pop dict: results in a DataFrame with new columns
+# 'state' and 'year' - they contain the info formerly in the index
+    # for clarity, specified data 'name' for column representation
+pop_flat = pop.reset_index(name='population')
+pop_flat
+    # Often, raw input data will appear in formats like this.
+
+# It's useful to get  practice building MultiIndex from the column values
+# set_index() method of DataFrame - returns multiply-indexed DF:
+pop_flat.set_index(['state', 'year'])
+
+
+##############################
+### Data Aggregations on Multi-Indices
+# As seen, PD has built-in data aggreagation methods
+    # e.g. mean(), sum(), max()
+
+# For hierarchally stored data, can pass "level" parameter to specify
+# the subset of data the aggregate is computed on
+health_data
+
+# To average the measurements taken in the 2 visits per year,
+# name index level to explore (i.e. "year")
+data_mean = health_data.mean(level='year')
+data_mean
+
+# can also take the mean among column levels too, use "axis" keyword
+data_mean.mean(axis=1, level='type')
+
+# this returns the average Heart Rate and Temperature 
+# from all subjects, in all visits, each year.
+    # will see similar functionality from "GroupBy" in Ch 3.08
+
+
+##############################
+### Aside: Panel Data
+# Pandas has a few other fundamental data structures not yet discussesd
+    # pd.Panel      object      Three-dimensional data
+    # pd.Panel4D    object      Four-dimensional data
+
+# Generally speaking, they carry a bit too much weight to be useful
+# Can achieve representations of the same data using multi-indexing
+
+# They will prove useful in some edge-cases, but focus on Series/DataFrames first
+# (with MultiIndexing where appropriate)
