@@ -113,3 +113,28 @@ df5 = make_df('ABC', [1, 2])
 df6 = make_df('BCD', [3, 4])
 display('df5', 'df6', 'pd.concat([df5, df6]')
 
+# "join" and "join_axes" options can be useful here
+    # DEFAULT: "join" = union        of input columns (join='outer')
+    # specify: "join" = intersection of input columns (join='inner')
+display('df5', 'df6', "pd.concat([df5, df6, join='inner'")
+
+# can also directly specify index of remaining columns with "join_axes"
+    # must feed a list of indices to use
+# this allows 'in between' Union (inclusive) and Intersection (exclusive)
+
+# e.g. Concat + show returned columns from the first DF indices:
+display('df5', 'df6', "pd.concat([df5, df6], join_axes=[df5.columns])")
+
+
+## The append() method:
+# because direct array concatenation is so common, can use append()
+# on your current DF/Series object:
+df1.append(df2)
+display('df1', 'df2', 'df1.append(df2')
+
+# while nice shorthand, append() and extend() methods do not modify original object
+# they create a new object with combined data - new index, new data buffer
+# means that these are inefficient and should not be used in repeated operations
+
+# upcoming: DB-style pd.merge() stuff. 
+# See docs for more: http://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html
