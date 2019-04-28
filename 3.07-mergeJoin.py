@@ -99,3 +99,40 @@ pd.merge(df1a, df3, left_index=True, right_on='name')
 
 # also, these options work for multiple indices/cols, see the documentation
 
+##############################
+### Specifying Set Arithmetic for Joins
+# So far, have glossed over the set arithmetic used in joins; using default
+# This becomes important when values appear in one dataset but not other
+df6 = pd.DataFrame({'name': ['Peter', 'Paul', 'Mary'],
+                    'food': ['fish', 'beans', 'bread']},
+                    columns=['name', 'food'])
+df7 = pd.DataFrame({'name': ['Mary', 'Joseph'],
+                    'drink': ['wine', 'beer']},
+                    columns=['name', 'drink'])
+pd.merge(df6, df7)
+
+# in the prior merge, only Mary is displayed. This is default:
+# default behavior: Intersection    aka Inner Join
+    # specified by "how" keyword
+    # options: 'inner', 'outer', 'left', 'right'
+
+pd.merge(df6, df7, how='inner')     # arg 'inner' is Intersection. Same output
+pd.merge(df6, df7, how='outer')     # arg 'outer' is Union. Missing vals=NAs
+pd.merge(df6, df7, how='left')
+
+
+##############################
+### Overlapping Column Names: the Suffixes Keyword
+# May have 2 input DataFrames with conflicting column names:
+df8 = pd.DataFrame({'name': ['Bob', 'Jake', 'Lisa', 'Sue'],
+                    'rank': [1, 2, 3, 4]})
+df9 = pd.DataFrame({'name': ['Bob', 'Jake', 'Lisa', 'Sue'],
+                    'rank': [3, 1, 4, 2]})
+pd.merge(df8, df9, on='name')
+
+# As output would have conflicting (used) column names, merge automatically
+# appends suffix _x and _y
+
+# can specify custom suffixes with the "suffixes" keyword:
+pd.merge(df8, df9, on='name', suffixes=['_L', '_R'])
+
