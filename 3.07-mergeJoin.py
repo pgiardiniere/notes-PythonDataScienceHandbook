@@ -136,3 +136,16 @@ pd.merge(df8, df9, on='name')
 # can specify custom suffixes with the "suffixes" keyword:
 pd.merge(df8, df9, on='name', suffixes=['_L', '_R'])
 
+
+### Example: US States Data
+# Following are shell commands to download the data
+# !curl -O https://raw.githubusercontent.com/jakevdp/data-USstates/master/state-population.csv
+# !curl -O https://raw.githubusercontent.com/jakevdp/data-USstates/master/state-areas.csv
+# !curl -O https://raw.githubusercontent.com/jakevdp/data-USstates/master/state-abbrevs.csv
+
+# use read_csv() to pull it in:
+pop = pd.read_csv('data/state-population.csv')
+areas = pd.read_csv('data/state-areas.csv')
+abbrevs = pd.read_csv('data/state-abbrevs.csv')
+
+display('pop.head()', 'areas.head()', 'abbrevs.head()')
