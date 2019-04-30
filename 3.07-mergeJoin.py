@@ -182,3 +182,36 @@ merged.loc[merged['state/region'] == 'PR', 'state'] = 'Puerto Rico'
 merged.loc[merged['state/region'] == 'USA', 'state'] = 'United States'
 merged.isnull().any()
 # now returns "False" - fixed the issue
+
+
+# Now that the data has been scrubbed, can merge the result with "areas" data
+# Join on 'state' column for both:
+final = pd.merge(merged, areas, on='state', how='left')
+final.head()
+
+# check for nulls:
+final.isnull().any()
+
+# again, we see nulls, look to see which regions were ignored:
+final['state'][final['area (sq. mi)'].isnull()].unique()
+
+# from return, we see area of the entire United States is not present
+# since it isn't relevant to ranking of the individual states, we'll drop it
+final.dropna(inplace=True)
+final.head()
+
+# now the final array is scrubbed to, can go about calculating pop density
+# query() --- to filter population statistics:
+    # data corresponding to year 2010
+    # Total poulations (i.e. NOT those under 18)
+data2010 = final.query("year == 2010 & ages == 'total'")
+data2010.head()
+
+# now we can get ensity and display in order
+# first, re-index data on state, then compute result:
+data2010.set_index('state', inplace=True)
+density = data2010['population'] / data2010['area (sq. mi)']
+
+density.sort_values(ascending=False, inplace=True)
+density.head()
+density.tail()      # display end of list
