@@ -148,4 +148,37 @@ pop = pd.read_csv('data/state-population.csv')
 areas = pd.read_csv('data/state-areas.csv')
 abbrevs = pd.read_csv('data/state-abbrevs.csv')
 
-display('pop.head()', 'areas.head()', 'abbrevs.head()')
+pop.head()
+areas.head()
+abbrevs.head()
+# Or -- print(pop.head(),'\n\n', areas.head(),'\n\n', abbrevs.head())
+
+# Given this, lets rank all US states and territores by 2010 pop density
+# Begin with many-to-one merge that gives full sate name within population DF
+
+# merge based on state/region cols of pop, abbreviateion of abbrevs. how=outer
+merged = pd.merge(pop, abbrevs, how='outer',
+                  left_on='state/region', right_on='abbreviation')
+merged = merged.drop('abbreviation', 1)     # drop duplicate information
+merged.head()
+
+# Since we used the inclusive outer-join, should check for mismatches
+# display True/False if field contains >0 NaN vals
+merged.isnull().any()
+# from the output, "population" and "state" contain null vals. 
+
+# from "population", display head of null entries:
+merged[merged['population'].isnull()].head()
+    # appears only Puerto Rico before 2000 has nulls 
+    # likely these are just not in original data, so no further inv. req'd
+    
+# from "state", null entries mean there was no corresponding entry in "abbrevs" key
+# display regions without the match:
+merged.loc[merged['state'].isnull(), 'state/region'].unique()
+    # from the output, seems that again Puerto Rico has discrepency, not matched to US as whole
+    # fix: fill in appropriate entries
+
+merged.loc[merged['state/region'] == 'PR', 'state'] = 'Puerto Rico'
+merged.loc[merged['state/region'] == 'USA', 'state'] = 'United States'
+merged.isnull().any()
+# now returns "False" - fixed the issue
