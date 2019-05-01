@@ -36,6 +36,83 @@ df.mean(axis=1)
 
 # In addition to the other aggregators covered in CH-2.4 (np Aggregation)
 # describe() method will return common summary statistics:
-
-# describe() planets, drop rows with missing data
+# describe() planets, and drop rows with missing data
 planets.dropna().describe()
+
+# A brief list of some built-in PD aggregations for Series/DataFrames:
+    # count()               Total number of items
+    # first(), last()       First, last item
+    # mean(), median()      Mean, median
+    # min(), max()          min, max
+    # std(), var()          standard deviation, variance
+    # mad()                 mean absolute deviation
+    # prod()                product of all
+    # sum()                 sum of all
+
+
+##############################
+### GroupBy: Split, Apply, Combine
+# While simple aggregation can provide general idea of the dataset,
+# often it's more insightful to aggregate conditionally on label/index
+
+# this is implemented in "groupby" operation - so named after SQL command
+# more popularly been described (by Hadley Wickham from R-land) as:
+    # split, apply, combine
+
+# see text for diagram, essentially 
+#   Split - it breaks up DF depending on value of key into seperate entities
+#   Apply - performs a function on the new individual groups
+#   Combine - merges results into an output array
+
+# in reality, this computation generally runs in a single pass on the input
+# where results are updated as it goes
+
+
+# example:
+df = pd.DataFrame({'key': ['A', 'B', 'C', 'A', 'B', 'C'],
+                   'data': range(6)}, columns=['key','data'])
+df
+df.groupby('key')
+# NOTE: return is NOT a DataFrame, but DataFrameGroupBy object
+
+# the DataFrameGroupBy object is a special view of the DataFrame, which performs
+# NO computation until aggregation is Applied   ("lazy evaluation" approach)
+
+# to produce result, Apply an aggregate, and see resulting Combine outputted
+df.groupby('key').sum()
+
+
+### The GroupBy Object
+# ... is a flexible abstraction, can usually treat it as a collection of DFs
+# with additional operations
+    # Basics:   Column Indexing, Iteration over groups, dispatch methods
+    # More:     Aggregate, Filter, Transform, Apply
+
+## Column Indexing:
+# GroupBy object supports col indexing same way as DataFrame, returns GroupBy
+planets.groupby('method')
+planets.groupby('method')['orbital_period']
+planets.groupby('method')['orbital_period'].median()
+
+## Iteration Over Groups:
+for (method, group) in planets.groupby('method'):
+    print("{0:30s} shape={1}".format(method, group.shape))
+    # useful for manual ops, often prefer "apply" functionality covered soon
+
+## Dispatch Methods:
+# Through Python class shenanigans, any method not explicitly implemented
+# by GroupBy object class will be passed through and called on the groups
+    # which, again, are Series/DF objects
+
+# e.g. describe() method of DataFrames to perform set of aggs foreach group
+planets.groupby('method')['year'].describe().unstack()
+
+
+### More GroupBy: Aggegate, Filter, Transform, Apply
+# setup new DataFrame:
+rng = np.random.RandomState(0)
+df = pd.DataFrame({'key': ['A', 'B', 'C', 'A', 'B', 'C'],
+                   'data1': range(6),
+                   'data2': rng.randint(0, 10, 6)},
+                   columns = ['key', 'data1', 'data2'])
+df
