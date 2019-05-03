@@ -50,3 +50,51 @@ titanic.pivot_table('survived', index='sex', columns='class', margins=True)
 
 # Pull CDC data on births in US
 births = pd.read_csv('data/births.csv')
+births.head()
+
+# add Decade column, check M/F births as func of decade:
+births['decade'] = 10 * (births['year' // 10])
+births.pivot_table('births', index='decade', columns='gender', aggfunc='sum')
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+sns.set()   # use Seaborn styles
+births.pivot_table('births', index='year', columns='gender', aggfunc='sum').plot()
+plt.ylabel('total births per year');
+
+
+## Further data exploration
+# there are more interesting features (not related to Pivot Tables)
+# can pull out of this dataset using PD tools
+
+# trim input data:
+quartiles = np.percentile(births['births'], [25, 50, 75])
+mu = quartiles[1]
+sig = 0.74 * (quartiles[2] - quartiles[0])
+
+# now, can use query() method to filter out rows with births outside given vals
+births = births.query('(births > @mu - 5 * @sig) & (births < @mu + 5 * @sig')
+# set 'day' column to integer (was originallyy string)
+births['day'] = births['day'].astype(int)
+
+# combine day, month, and year to create a Date index (time series)
+births.index = pd.to_datetime(10000 * births.year + 100 * births.month + 
+                              births.day, format='%Y%m%d')
+
+births['dayofweek'] = births.index.dayofweek
+
+
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+births.pivot_table('births', index='dayofweek', 
+                   columns='decade', aggfunc='mean').plot()
+
+plt.gca().setxticklabels(['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'])
+plt.ylabel('mean births by day')
+
+# insight: births less common on weekends than weekdays
+
+# now, group by month and day seperately
+births_by_date = births.pivot_table('births', [births.index.month, births.index.day])
+births_by_date.head()
