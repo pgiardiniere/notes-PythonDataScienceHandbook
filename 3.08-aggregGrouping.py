@@ -116,3 +116,39 @@ df = pd.DataFrame({'key': ['A', 'B', 'C', 'A', 'B', 'C'],
                    'data2': rng.randint(0, 10, 6)},
                    columns = ['key', 'data1', 'data2'])
 df
+
+## Aggregate():
+# aggregate() allows for strings & funcs in lists to allow multiple aggregates
+df.groupby('key').aggregate(['min', np.median, max])
+# aggregate() accepts dictionaries - map column names to desired operations:
+df.groupby('key').aggregate({'data1': 'min', 
+                             'data2': 'max'})
+
+## Filtering:
+# Filtering operation allows you to drop data based on group properties
+def filter_func(x):
+    return x ['data2'].std() > 4
+df
+df.groupby('key').std()
+df.groupby('key').filter(filter_func)
+    # filter_func returns boolean whether group passes filter. Group A drops
+
+
+## Transformation:
+# Aggregation must return a reduced version of data, while Transform
+# can return some modified version of the full data to recombine
+# output is same-shape as the input
+
+# common use: center data by subtracting group-wise mean:
+df.groupby('key').transform(lambda x: x - x.mean())
+
+
+## The apply() method:
+# apply() lets you apply an arbitrary function to the group results
+def norm_by_data2(x):
+    # x is a DataFrame of group values
+    x['data1'] /= x['data2'].sum()
+    return x
+
+df
+df.groupby('key').apply(norm_by_data2)
