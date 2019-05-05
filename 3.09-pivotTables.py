@@ -44,7 +44,7 @@ titanic.pivot_table(index='sex', columns='class',
 
 # margins useful to compute totals along each grouping
 titanic.pivot_table('survived', index='sex', columns='class', margins=True)
-
+    # yields info about gender-agnostic survival rate by class & overall rates
 
 ### Another Example: Birthrate Data
 # get CDC data (if not already in dir)
@@ -55,7 +55,7 @@ births = pd.read_csv('data/births.csv')
 births.head()
 
 # add Decade column, check M/F births as func of decade:
-births['decade'] = 10 * (births['year' // 10])
+births['decade'] = 10 * (births['year' // 10)
 births.pivot_table('births', index='decade', columns='gender', aggfunc='sum')
 
 %matplotlib inline
@@ -100,3 +100,14 @@ plt.ylabel('mean births by day')
 # now, group by month and day seperately
 births_by_date = births.pivot_table('births', [births.index.month, births.index.day])
 births_by_date.head()
+
+# to make more easily plottable, turn months and days into date by 
+# associating them with dummy year variable     (choose leap year)
+births_by_date.index = [pd.datetime(2012, month, day)
+                        for (month, day) in births_by_date.index]
+
+# plot results
+fig, ax = plt.subplots(figsize=(12, 4))
+births_by_date.plot(ax=ax);
+    # note the dip in births on holidays
+    # more likely due to no induced-births on those holiday days in particular
