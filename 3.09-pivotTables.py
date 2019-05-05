@@ -19,15 +19,16 @@ titanic.groupby(['sex', 'class'])['survived'].aggregate('mean').unstack()
 
 ### Pivot table syntax:
 # this is the pivot_table() method equivalent:
-titanic.pivot_table('survived', index='sex', column='class')
+titanic.pivot_table('survived', index='sex', columns='class')
 
 ## multi-level pivot tables:
-# 
+# just like GroupBy, pivot tables can be specified with multiple levels
+# check age as third dimesnions using pd.cut() function:
 age = pd.cut(titanic['age'], [0, 18, 80])
 titanic.pivot_table('survived', ['sex', age], 'class')
 
-# can apply technique on columns as well:
-fare = pd.qcut(titanic['fare'], 2)
+# can apply cut() on columns as well:
+fare = pd.cut(titanic['fare'], 2)
 titanic.pivot_table('survived', ['sex', age], [fare, 'class'])
 
 ## additional pivot table options
@@ -39,8 +40,9 @@ DataFrame.pivot_table(data, values=None, index=None, columns=None,
 # aggfunc keyword controls type of aggregation applied (default=mean)
 titanic.pivot_table(index='sex', columns='class',
                     aggfunc={'survived':sum, 'fare':'mean'})
+    # values keyword omitted - determined automatically when specifying aggfunc
 
-# 
+# margins useful to compute totals along each grouping
 titanic.pivot_table('survived', index='sex', columns='class', margins=True)
 
 
