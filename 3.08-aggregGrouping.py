@@ -60,8 +60,8 @@ planets.dropna().describe()
     # split, apply, combine
 
 # see text for diagram, essentially 
-#   Split - it breaks up DF depending on value of key into seperate entities
-#   Apply - performs a function on the new individual groups
+#   Split - it breaks up DF by specified key into seperate entities
+#   Apply - performs (aggregation) function on the new individual groups
 #   Combine - merges results into an output array
 
 # in reality, this computation generally runs in a single pass on the input
@@ -89,24 +89,21 @@ df.groupby('key').sum()
 
 ## Column Indexing:
 # GroupBy object supports col indexing same way as DataFrame, returns GroupBy
-planets.groupby('method')
-planets.groupby('method')['orbital_period']
-planets.groupby('method')['orbital_period'].median()
+planets.groupby('method')                               # DF GroupBy
+planets.groupby('method')['orbital_period']             # Ser GroupBy
+planets.groupby('method')['orbital_period'].median()    # aggregate Ser
 
 ## Iteration Over Groups:
 for (method, group) in planets.groupby('method'):
     print("{0:30s} shape={1}".format(method, group.shape))
-    # useful for manual ops, often prefer "apply" functionality covered soon
+    # useful for manual ops, but often prefer "apply" functionality seen later
 
 ## Dispatch Methods:
-# Through Python class shenanigans, any method not explicitly implemented
+# Through Python class (dispatch tables?), any method not explicitly implemented
 # by GroupBy object class will be passed through and called on the groups
-    # which, again, are Series/DF objects
+planets.groupby('method')['year'].describe().unstack()  # describe() dispatch
 
-# e.g. describe() method of DataFrames to perform set of aggs foreach group
-planets.groupby('method')['year'].describe().unstack()
-
-
+##############################
 ### More GroupBy: Aggegate, Filter, Transform, Apply
 # setup new DataFrame:
 rng = np.random.RandomState(0)
@@ -135,8 +132,8 @@ df.groupby('key').filter(filter_func)
 
 ## Transformation:
 # Aggregation must return a reduced version of data, while Transform
-# can return some modified version of the full data to recombine
-# output is same-shape as the input
+# returns some modified version of the entire dataset
+    # i.e. Output table is same shape as the Input    (like math Transf.)
 
 # common use: center data by subtracting group-wise mean:
 df.groupby('key').transform(lambda x: x - x.mean())
@@ -151,7 +148,7 @@ def norm_by_data2(x):
 
 df
 df.groupby('key').apply(norm_by_data2)
-
+# per function name, we've normalized the dataset against data2 (sum of vals)
 
 ##############################
 ### Specifying the Split Key:
@@ -174,7 +171,7 @@ df2 = df.set_index('key')
 mapping = {'A': 'vowel', 'B': 'consonant', 'C': 'consonant'}
 df2
 df2.groupby(mapping).sum()
-df2.groupby(mapping).count()    # NOTE: personally been using frequently to help get idea of what aggs/GBs are doing
+df2.groupby(mapping).count()
 
 
 ## Any python function
