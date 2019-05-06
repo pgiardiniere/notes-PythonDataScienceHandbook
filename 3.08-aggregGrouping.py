@@ -52,7 +52,7 @@ planets.dropna().describe()
 
 ##############################
 ### GroupBy: Split, Apply, Combine
-# While simple aggregation can provide general idea of the dataset,
+# While simple aggregation can provide general idea of the whole dataset,
 # often it's more insightful to aggregate conditionally on label/index
 
 # this is implemented in "groupby" operation - so named after SQL command
@@ -74,9 +74,8 @@ df = pd.DataFrame({'key': ['A', 'B', 'C', 'A', 'B', 'C'],
 df
 df.groupby('key')
 # NOTE: return is NOT a DataFrame, but DataFrameGroupBy object
-
-# the DataFrameGroupBy object is a special view of the DataFrame, which performs
-# NO computation until aggregation is Applied   ("lazy evaluation" approach)
+    # the DataFrameGroupBy object is a special view of the DataFrame, performs
+    # NO computation until aggregation is Applied   ("lazy evaluation" approach)
 
 # to produce result, Apply an aggregate, and see resulting Combine outputted
 df.groupby('key').sum()
@@ -127,7 +126,7 @@ df.groupby('key').aggregate({'data1': 'min',
 ## Filtering:
 # Filtering operation allows you to drop data based on group properties
 def filter_func(x):
-    return x ['data2'].std() > 4
+    return x['data2'].std() > 4
 df
 df.groupby('key').std()
 df.groupby('key').filter(filter_func)
@@ -152,3 +151,39 @@ def norm_by_data2(x):
 
 df
 df.groupby('key').apply(norm_by_data2)
+
+
+##############################
+### Specifying the Split Key:
+# in the examples above, we split the DataFrame on a single column name
+# we can define groups in other ways, such as the following:
+
+## A list, array, series, or index w/ the grouping keys::
+# The key can be any series or list, so long as LEN matches DF LEN
+L = [0, 1, 0, 1, 2, 0]
+df
+df.groupby(L).sum()
+
+# equivalent to the groupby('key') syntax used, but more verbose. 
+    # i.e. for demonstration purposes only. This is what is abstracted away normally
+df.groupby(df['key']).sum()
+
+
+## A dictionary or series mapping index values to group keys::
+df2 = df.set_index('key')
+mapping = {'A': 'vowel', 'B': 'consonant', 'C': 'consonant'}
+df2
+df2.groupby(mapping).sum()
+df2.groupby(mapping).count()    # NOTE: personally been using frequently to help get idea of what aggs/GBs are doing
+
+
+## Any python function
+# similar to mapping, can pass any random Python func that will 
+# A) take input index value and B) output the group:
+df2
+df2.groupby(str.lower).mean()   # doesn't mean it's useful though lol
+
+
+## a list of valid keys
+# any of the preceding key choices can be COMBINED to group on multi-index:
+df2.groupby([str.lower, mapping]).mean()
