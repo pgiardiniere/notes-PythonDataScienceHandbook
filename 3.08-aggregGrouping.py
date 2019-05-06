@@ -187,3 +187,12 @@ df2.groupby(str.lower).mean()   # doesn't mean it's useful though lol
 ## a list of valid keys
 # any of the preceding key choices can be COMBINED to group on multi-index:
 df2.groupby([str.lower, mapping]).mean()
+
+
+## Grouping Example:
+# with the little additional knowledge of multi-index key mapping,
+# can count discovered planets by method and by decade in easy form:
+decade = 10 * (planets['year'] // 10)
+decade = decade.astype(str) + 's'
+decade.name = 'decade'
+planets.groupby(['method', decade])['number'].sum().unstack().fillna(0)

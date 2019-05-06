@@ -1,6 +1,6 @@
 # GroupBy as an abstraction allows deeper understanding of datasets
-# Pivot Tables are somewhat of an extension on the idea
-# the same split-apply-combine happens, but output is now 2D grid
+# Pivot Tables are somewhat of an extension on them
+# the same split-apply-combine happens, but output is now 2D grid as well
 
 ##############################
 ### Motivating Pivot Tables
@@ -12,13 +12,16 @@ titanic = sns.load_dataset('titanic')
 
 titanic.head()
 
+# using GroupBy approach seen in prior CH:
 titanic.groupby('sex')[['survived']].mean()
 
+# GroupBy on both Gender and Class becomes muddled
 titanic.groupby(['sex', 'class'])['survived'].aggregate('mean').unstack()
-# issue: to get more detailed data requires lots of ugly syntax with GroupBy
+    # to avoid these more complex/manual GroupBy ops, we'll use Pivot Tables
+
 
 ### Pivot table syntax:
-# this is the pivot_table() method equivalent:
+# this is the pivot_table() method equivalent to final GroupBy:
 titanic.pivot_table('survived', index='sex', columns='class')
 
 ## multi-level pivot tables:
@@ -28,7 +31,7 @@ age = pd.cut(titanic['age'], [0, 18, 80])
 titanic.pivot_table('survived', ['sex', age], 'class')
 
 # can apply cut() on columns as well:
-fare = pd.cut(titanic['fare'], 2)
+fare = pd.qcut(titanic['fare'], 2)
 titanic.pivot_table('survived', ['sex', age], [fare, 'class'])
 
 ## additional pivot table options
@@ -37,7 +40,7 @@ DataFrame.pivot_table(data, values=None, index=None, columns=None,
                       aggfunc='mean', fill_value=None, margins=False,
                       dropna=True, margins_name='All')
 
-# aggfunc keyword controls type of aggregation applied (default=mean)
+# aggfunc keyword controls type of aggregation applied (NOTE: default=mean)
 titanic.pivot_table(index='sex', columns='class',
                     aggfunc={'survived':sum, 'fare':'mean'})
     # values keyword omitted - determined automatically when specifying aggfunc
@@ -46,8 +49,9 @@ titanic.pivot_table(index='sex', columns='class',
 titanic.pivot_table('survived', index='sex', columns='class', margins=True)
     # yields info about gender-agnostic survival rate by class & overall rates
 
+##############################
 ### Another Example: Birthrate Data
-# get CDC data (if not already in dir)
+# get CDC data (already stored locally on my machine)
 # !curl -O https://raw.githubusercontent.com/jakevdp/data-CDCbirths/master/births.csv
 
 # Pull CDC data on births in US
@@ -55,7 +59,7 @@ births = pd.read_csv('data/births.csv')
 births.head()
 
 # add Decade column, check M/F births as func of decade:
-births['decade'] = 10 * (births['year' // 10)
+births['decade'] = 10 * (births['year'] // 10)
 births.pivot_table('births', index='decade', columns='gender', aggfunc='sum')
 
 %matplotlib inline
