@@ -87,5 +87,43 @@ slice()
 # both are enablers for vectorized element access from each array
 # example:
 str.slice(0, 3)
-df.str.slice(0, 3)
-df.stf[0:3]
+
+df.str.slice(0, 3)  # these 2 statements are equivalent,
+df.stf[0:3]         # 2nd being the Python standard indexing syntax
+
+# get and slice allow access to elements of arrs returned by split()
+# e.g. Pull last name::
+monte.str.split().str.get(-1)
+
+
+## Indicator Variables
+# get_dummies() is useful when data has a column containing coded indicator
+# Example dataset: contains following encoding:
+    # A = "born in America" 
+    # B = "born in the United Kingdom"
+    # C = "likes cheese"
+    # D = "likes spam"
+full_monte = pd.DataFrame({'name': monte,
+                           'info': ['B|C|D', 'B|D', 'A|C',
+                                    'B|D', 'B|C', 'B|C|D']})
+full_monte
+full_monte['info'].str.get_dummies('|')
+
+##############################
+### Example: Recipe Database
+# Data GET (gunzip cmdlet - Linux only. Win - use 7zip)
+  # !curl -O http://openrecipes.s3.amazonaws.com/recipeitems-latest.json.gz
+  # !gunzip recipeitems-latest.json.gz
+
+# Attempt to read in values:
+try:
+    recipes = pd.read_json('recipeitems-latest.json')
+except ValueError as e:
+    print("ValueError:", e)
+
+# exception thrown mentions 'trailing data' - due to using file in which
+# each line is itself valid json, but the file itself is not. Verify true:
+with open('recipeitems-latest.json') as f:
+    line = f.readline()
+pd.read_json(line).shape
+
