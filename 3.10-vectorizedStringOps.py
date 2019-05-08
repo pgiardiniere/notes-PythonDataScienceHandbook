@@ -61,6 +61,31 @@ split()         # equiv. to str.split(), but with regexs
 rsplit()        # equiv. to str.rsplit, but with regexs
 # -------------------------
 
-# as always, regexs are quite powerful operators when dealing with strings:
+# as always, regexs are quite powerful when dealing with strings:
 # get first name from each element:
 monte.str.extract('([A-Za-z]+)', expand=False)
+monte.str.findall(r'^[^AEIOU].*[^aeiou]$')
+
+
+## Miscellaneous methods:
+# the following are other convenient operations for strings:
+get()           # Index each element
+slice()         # Slice each element
+slice_replace() # replace slice in each element with passed value
+join()          # Join strings in element of series with passed seperator
+cat()           # String concatenation
+repeat()        # repeat values
+normalize()     # Return Unicode form of string
+pad()           # Add whitespace to left|right|both sides of string
+wrap()          # Split long strings into lines under a passed width
+get_dummies()   # extract dummy variables as a dataframe
+
+
+## Vectorized item access and slicing
+get()
+slice() 
+# both are enablers for vectorized element access from each array
+# example:
+str.slice(0, 3)
+df.str.slice(0, 3)
+df.stf[0:3]
