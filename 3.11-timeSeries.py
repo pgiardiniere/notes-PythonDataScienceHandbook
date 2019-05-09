@@ -25,6 +25,28 @@ date.strftime('%A')
     # also: http://labix.org/python-dateutil 
     # and TimeZones for the particularly masochistic: http://pytz.sourceforge.net/
 
+# datetime and dateutil are flexible and have simple syntax
+# these objects and built-ins perform most ops you'd ever want
+# issue: large arrays of dates/times are NOT efficient
+    # enter: NP
 
-
+## Typed arrays of times: NumPy's "datetime64"
 import numpy as np
+date = np.array('2015-07-04', dtype=np.datetime64)
+date
+date + np.arange(12)
+    # with a small op, can't see the efficiency gain really, but same idea as shown before
+
+np.datetime64('2015-07-04 12:00')
+    # time zone automatically set to TZ of local computer
+np.datetime64('2015-07-04 12:59:59:50', 'ns')
+    # set precision to nano-seconds
+
+# a detail of datetime64 and timedelta64 objects: built upon a 
+# "fundamental time unit". As they're limited to 64 bit precision, the limit
+# to range of times encodable is dependent upon the precision of time you specify
+
+
+## Dates and times in pandas: best of both (native/NP)
+
+import pandas as pd
