@@ -127,3 +127,7 @@ with open('recipeitems-latest.json') as f:
     line = f.readline()
 pd.read_json(line).shape
 
+# read the entire file into a Python array
+with open('recipeitems-latest.json', 'r') as f:
+    ############ NOTE: initial import of the .json failed - troubleshoot later
+    
