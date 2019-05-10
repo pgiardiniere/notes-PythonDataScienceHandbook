@@ -111,9 +111,16 @@ full_monte['info'].str.get_dummies('|')
 
 ##############################
 ### Example: Recipe Database
-# Data GET (gunzip cmdlet - Linux only. Win - use 7zip)
+# Data GET (gunzip cmdlet - Linux only. Win - use 7zip | ubuntuvm)
   # !curl -O http://openrecipes.s3.amazonaws.com/recipeitems-latest.json.gz
+    # NOTE: per Issue 218 on the projects github page https://github.com/fictivekin/openrecipes/issues/218
+    # the daily json exports are failing and will not be reinstated
+    # must use link for the last known working export:
+    # https://s3.amazonaws.com/openrecipes/20170107-061401-recipeitems.json.gz
+
   # !gunzip recipeitems-latest.json.gz
+    # NOTE: ipython doesn't have gunzip module, so had to go boot up the old
+    # ubuntuvm machine for curl to work. 
 
 # Attempt to read in values:
 try:
