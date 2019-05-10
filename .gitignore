@@ -1,1 +1,5 @@
+# ignore config settings
 \.vscode
+
+# ignore recipe dataset, filesize too large
+data/20170107-061401-recipeitems.json
