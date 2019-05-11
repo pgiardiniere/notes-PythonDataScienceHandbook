@@ -136,5 +136,15 @@ pd.read_json(line).shape
 
 # read the entire file into a Python array
 with open('data/20170107-061401-recipeitems.json', 'r') as f:
-    ############ NOTE: initial import of the .json failed - troubleshoot later
-    
+    # extract each line
+    data = (line.strip() for line in f)
+    # reformat each line into element of a list
+    data_json = "[{0}]".format(','.join(data))
+
+        # still fails, 'charmap' can't decode byte ___ in position ___,
+        # character maps to <undefined>
+
+# read the result as a JSON
+recipes = pd.read_json(data_json)
+
+recipes.shape
