@@ -124,17 +124,17 @@ full_monte['info'].str.get_dummies('|')
 
 # Attempt to read in values:
 try:
-    recipes = pd.read_json('recipeitems-latest.json')
+    recipes = pd.read_json('data/20170107-061401-recipeitems.json')
 except ValueError as e:
     print("ValueError:", e)
 
 # exception thrown mentions 'trailing data' - due to using file in which
 # each line is itself valid json, but the file itself is not. Verify true:
-with open('recipeitems-latest.json') as f:
+with open('data/20170107-061401-recipeitems.json') as f:
     line = f.readline()
 pd.read_json(line).shape
 
 # read the entire file into a Python array
-with open('recipeitems-latest.json', 'r') as f:
+with open('data/20170107-061401-recipeitems.json', 'r') as f:
     ############ NOTE: initial import of the .json failed - troubleshoot later
     
