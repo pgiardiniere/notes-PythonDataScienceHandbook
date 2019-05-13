@@ -64,3 +64,42 @@ date = pd.to_timedelta(np.arange(12), 'D')
 # PD is best when you index data by timestamps
 index = pd.DatetimeIndex(['2014-07-04', '2014-08-04',
                           '2015-07-04', '2015-08-04'])
+data = pd.Series([0, 1, 2, 3], index=index)
+data
+
+# now we have data (ints) in a Series (indexed by timestamps)
+# can make use of Series indexing patterns familiar with,
+# where now we pass values which are coerced into Date object type
+data['2014-07-04':'2015-07-04']
+
+# additionally, date-only index operations available.
+# e.g. pass a year to obtain a slice of all data from given year:
+data['2015']
+
+
+### Pandas Time Series Data Structures:
+# fundamental PD data structures for Time Series data:
+
+# Type                      Index Structure     About
+# -----------------------------------------------------------------
+# Timestamps                DatetimeIndex       A replacement for Python native datetime
+# Time Periods              PeriodIndex         fixed-frequency interval
+# Time Deltas/Durations     TimedeltaIndex      
+
+# most fundamental is timestamp/DatetimeIndex
+
+# pd.to_datetime()
+    # when passed single val, yields a timestamp
+    # when passed a list/arr, yields a DatetimeIndex
+dates = pd.to_datetime([datetime(2015, 7, 3), '4th of July, 2015',
+                        '2015-Jul-6', '07-07-2015', '20150708'])
+dates
+
+# can convert a DatetimeIndex to a PeriodIndex by using:
+# to_period()
+    # by adding a frequency code as well. 'D' indicates daily freq:
+dates.to_period('D')
+
+
+# TimedeltaIndex is created (in one case) by subtracing a date from another:
+dates - date[0]
