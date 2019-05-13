@@ -50,3 +50,17 @@ np.datetime64('2015-07-04 12:59:59:50', 'ns')
 ## Dates and times in pandas: best of both (native/NP)
 
 import pandas as pd
+date = pd.to_datetime("4th of July, 2015")
+date
+
+# use string format code to output day of week for given date object
+date.strftime('%A')     # Returns: 'Saturday'
+
+# can do NP-style vectorized operations directly on date objects:
+date = pd.to_timedelta(np.arange(12), 'D')
+
+##############################
+### Pandas Time Series: Indexing by Time
+# PD is best when you index data by timestamps
+index = pd.DatetimeIndex(['2014-07-04', '2014-08-04',
+                          '2015-07-04', '2015-08-04'])
