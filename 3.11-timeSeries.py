@@ -100,6 +100,29 @@ dates
     # by adding a frequency code as well. 'D' indicates daily freq:
 dates.to_period('D')
 
-
 # TimedeltaIndex is created (in one case) by subtracing a date from another:
 dates - date[0]
+
+
+## Regular Sequences: pd.date_range()
+
+# pd.date_range()       for     timestamps
+# pd.period_range()     for     periods
+# pd.timedelta_range()  for     timedeltas
+
+# begin and end date (frequency default: 1 day)
+pd.date_range('2015-07-03', '2015-07-10')
+
+# can specify with startpoint and num periods
+pd.date_range('2015-07-03', periods=8)
+
+# Additionally, can make custom frequncy - see hourly timestamp range below
+pd.date_range('2015-07-03', periods=8, freq='H')
+
+# or, a sequence of durations increasing by an hour:
+pd.timedelta_range(0, periods=10, freq='H')
+
+### Frequencies and Offsets
+# (table of codes)
+# stuff ------
+pd.timedelta_range(0, periods=9, freq="2H30T")
