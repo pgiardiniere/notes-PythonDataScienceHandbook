@@ -141,3 +141,27 @@ goog = data.DataReader('GOOG', start='2004', end='2016', data_source='google')
 #       will not be able to complete section notes. Goes into some basic plots.
 
 ## Resampling and Converting Frequencies
+    # still uses deprecated functionality
+
+
+### Example: Visualizing Seattle Bicycle Counts
+# data get:
+  # as before, boot up the ubuntuvm and curl into the (old) GD workspaces data volume
+  # !curl -o FremontBridge.csv https://data.seattle.gov/api/views/65db-xm6k/rows.csv?accessType=DOWNLOAD
+  # then push into 'real' workspaces/data dir for manipulation
+data = pd.read_csv('data/FremontBridge.csv', index_col='Date', parse_dates=True)
+data.head()
+
+# formatting, shorten column names and provide a simple aggregate col
+data.columns = ['West', 'East']
+data['Total'] = data.eval('West + East')
+
+data.dropna().describe()
+## Visualizing the data
+%matplotlib inline
+import seaborn; seaborn.set()
+
+data.plot()
+plt.ylabel('Hourly Bicycle Count');
+
+##### much more matplotlib functionality - todo #####
