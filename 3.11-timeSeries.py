@@ -1,4 +1,4 @@
-# Pandas was developed in conetext of financial modeling (!)
+# Pandas was developed in conetext of financial modeling
 # has extensive tools for dates, times, time-indexed data:
     # Time Stamps                   - particular moments in time (6:00 Jul 4th, 2015)
     # Time Intervals and Periods    - length of time between a begin and end point
@@ -40,7 +40,7 @@ date + np.arange(12)
 np.datetime64('2015-07-04 12:00')
     # time zone automatically set to TZ of local computer
 np.datetime64('2015-07-04 12:59:59:50', 'ns')
-    # set precision to nano-seconds
+    # set precision to nano-seconds -NOTE: "timezone aware datetimes are deprecated" 
 
 # a detail of datetime64 and timedelta64 objects: built upon a 
 # "fundamental time unit". As they're limited to 64 bit precision, the limit
@@ -122,7 +122,22 @@ pd.date_range('2015-07-03', periods=8, freq='H')
 # or, a sequence of durations increasing by an hour:
 pd.timedelta_range(0, periods=10, freq='H')
 
+
 ### Frequencies and Offsets
 # (table of codes)
 # stuff ------
 pd.timedelta_range(0, periods=9, freq="2H30T")
+
+# get range of 5 business days, beginning on 2015-07-01
+from pandas.tseries.offsets import BDay
+pd.date_range('2015-07-01', periods=5, freq=BDay())
+
+
+### Resampling, Shifting, and Windowing
+from pandas_datareader import data 
+
+goog = data.DataReader('GOOG', start='2004', end='2016', data_source='google')
+#   NOTE: "ImmediateDeprecationError - Google Finance dep. due to API breaks"
+#       will not be able to complete section notes. Goes into some basic plots.
+
+## Resampling and Converting Frequencies
