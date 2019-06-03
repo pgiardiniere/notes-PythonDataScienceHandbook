@@ -164,4 +164,41 @@ import seaborn; seaborn.set()
 data.plot()
 plt.ylabel('Hourly Bicycle Count');
 
-##### much more matplotlib functionality - todo #####
+# problem: 25,000 hourly samples are too granular
+# resample data to a courser grid (weekly)
+weekly = data.resample('W').sum()
+weekly.plot(style=[':', '--', '-'])
+plt.ylabel('Weekly bicycle count');
+
+# can use a rolling mean, 30 day window width, to smooth edges a little:
+daily = data.resample('D').sum()
+daily.rolling(30, center=True).sum().plot(style=[':', '--', '-'])
+
+# use a Guassian window to smooth edges further: (50 day width, 10 day Gaussian intra-width)
+daily.rolling(50, center=True, win_type='gaussian').sum(std=10).plot(style=[':', '--', '-'])
+
+## Digging in
+# with our smooth graph, we have general idea, but can't see particulars
+# e.g. How is average traffic affected as function of time of day. Use GroupBy's
+by_time = data.groupby(data.index.time).mean()
+hourly_ticks = 4 * 60 * 60 * np.arange(6)
+by_time.plot(xticks=hourly_ticks, style=[':', '--', '-'])
+    # unsurprisignly, traffic is highest overall around 8:00 and 5:00 
+    # can see directionality too - West high @ 8, East high @ 5
+
+# check traffic by weekday (instead of avg daily overall)
+by_weekday = data.groupby(data.index.dayofweek).mean()
+by_weekday.index = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
+by_weekday.plot(style=[':', '--', '-']);
+    # unsurprisingly, traffic is highest M-Fri  
+
+# Now, compound groupby to check hourly trends on weekdays vs weekends
+# set up 2 flags, to mark type of day and time groupings, respectively
+weekend = np.where(data.index.weekday < 5, 'Weekday', 'Weekend')
+by_time = data.groupby([weekend, data.index.time]).mean()
+
+import matplotlib.pyplot as pltfig, ax = plt.subplots(1, 2, figsize=(14, 5))
+by_time.ix['Weekday'].plot(ax=ax[0], title='Weekdays',
+                           xticks=hourly_ticks, style=[':', '--', '-'])
+by_time.ix['Weekend'].plot(ax=ax[1], title='Weekends',
+                           xticks=hourly_ticks, style=[':', '--', '-'])
