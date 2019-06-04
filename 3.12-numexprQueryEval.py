@@ -37,3 +37,27 @@ df1, df2, df3, df4 = (pd.DataFrame(rng.rand(nrows, ncols))
                       for i in range(4))
 
 %timeit df1 + df2 + df3 + df4
+
+%timeit pd.eval('df1 + df2 + df3 + df4')
+
+
+### Operations supported by pd.eval()
+# demonstration of supported ops as of PD v0.16 in pd.eval()
+df1, df2, df3, df4, df5 = (pd.Dataframe(rng.randint(0, 1000, (100, 3)))
+                           for i in range(5))
+
+## Arithmetic Operators
+# All arithmetic operators are supported
+result1 = -df1 * df2 / (df3 + df4) - df5
+result2 = pd.eval('-df1 * df2 / (df3 + df4) - df5')
+np.allclose(result1, result2)
+
+## Comparison Operators
+# all comparison operators, including chained expressions:
+result1 = (df1 < df2) & (df2 <= df3) & (df3 != df4)
+result2 = pd.eval('df1 < df2 <= df3 != df4')
+np.allclose(result1, result2)
+
+## Bitwise Operators
+# supports the & and | bitwise operators
+result1 = (df1 < 0.5) & (df2 < 0.5) | (df3 < df4)
