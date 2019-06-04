@@ -61,3 +61,27 @@ np.allclose(result1, result2)
 ## Bitwise Operators
 # supports the & and | bitwise operators
 result1 = (df1 < 0.5) & (df2 < 0.5) | (df3 < df4)
+result2 = pd.eval('(df1 < 0.5) & (df2 < 0.5) | (df3 < df4)')
+np.allclose(result1, result2)
+
+# also supports the use of literal "and" and "or" in Bool expressions
+result3 = pd.eval('(df1 < 0.5) and (df2 < 0.5) or (df3 < df4)')
+np.allclose(result1, result3)
+
+## Other Attributes and Indices
+# pd.eval() supports access to:
+    # object attributes     via     obj.attr    syntax
+    # index  attributes     via     obj[index]  syntax
+result1 = df2.T[0] + df3.iloc[1]
+result2 = pd.eval('df2.T[0] + df3.iloc[1]')
+np.allclose(result1, result2)
+
+## Other Operations
+# otherwise not mentioned ops [function calls, conditional statements, loops]
+# are all NOT implemented within pd.eval() - you would need full numexpr lib
+
+### DataFrame.eval() for Column-Wise Operations
+# pd.eval() is top-level, DFs have their own eval() which is similar
+# benefit: columns can be referred to by name
+df = pd.DataFrame(rng.rand(1000, 3), columns=['A', 'B', 'C'])
+df.head()
