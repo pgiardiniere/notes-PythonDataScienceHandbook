@@ -85,3 +85,25 @@ np.allclose(result1, result2)
 # benefit: columns can be referred to by name
 df = pd.DataFrame(rng.rand(1000, 3), columns=['A', 'B', 'C'])
 df.head()
+
+result1 = (df['A'] + df['B']) / (df['C'] - 1)
+result2 = pd.eval("df.A + df.B) / (df.C - 1)")
+np.allclose(result1, result2)
+# even MORE concise: treat col names as variables!
+result3 = df.eval('(A + B) / (C - 1)')
+np.allclose(result1, result3)
+
+## Assignment in DataFrame.eval()
+# create column "D" as result of arithmetic operations on A,B, & C
+df.eval('D = (A + B) / C', inplace=True)
+df.head()
+# re-assign existing column "D" (in same way)
+df.eval('D = (A - B) / C', inplace=True)
+df.head()
+
+## Local variables in DataFrame.eval()
+# adding @ sign; df.eval() will plug local Python vars, not DF cols
+column_mean = df.mean(1)
+result1 = df['A' + column_mean]
+result2 = df.eval('A + @column_mean')
+np.allclose(result1, result2)
