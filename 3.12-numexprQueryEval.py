@@ -129,3 +129,31 @@ np.allclose(result1, result2)
 
 
 ### Performance Tradeoffs: When to use these functions
+# Two considerations: Computation Time, Memory Use
+# recall: all compound expressions involving NP arrs or PD DFs creates tmp arrs
+
+# For example, these two blocks are performing roughly equivalent work:
+x = df[(df.A < 0.5) & (df.B < 0.5)]
+
+tmp1 = df.A < 0.5
+tmp2 = df.B < 0.5
+tmp3 = tmp1 & tmp2
+x = df[tmp3]
+
+# if the size of your tmp DataFrames are significant compared to system RAM
+# (several GBs) then you would want to use eval() or query() exprs.
+
+# recall: can get approximate size of arr in bytes with:
+df.values.nbytes
+
+# sometimes eval() is faster even without maxing-out system memory.
+# You'd want to compare temp arr size to the size of L1 or L2 CPU caches on your system
+# primarily though, it's about preventing memory utilization issues.
+
+# For more performance notes, see referenced documentation:
+    # General index, lots of performance-specific tutorials
+    # http://pandas-docs.github.io/pandas-docs-travis/
+
+# Cython extension notes (for use with ipython)
+# http://pandas-docs.github.io/pandas-docs-travis/user_guide/enhancingperf.html
+%load_ext Cython
