@@ -107,3 +107,25 @@ column_mean = df.mean(1)
 result1 = df['A' + column_mean]
 result2 = df.eval('A + @column_mean')
 np.allclose(result1, result2)
+
+
+### DataFrame.query() Method
+# DataFrame has another method on evaluated strings called query()
+# This is both a more efficient and easy-to-comprehend op to masking.
+result1 = df[(df.A < 0.5) & (df.B < 0.5)]
+result2 = pd.eval('df[(df.A < 0.5) & (df.B < 0.5)]')
+np.allclose(result1, result2)
+
+# Do not express using DataFrame.eval() syntax - use query() method. (?)
+result2 = df.query('A < 0.5 and B < 0.5')
+np.allclose(result1, result2)
+
+
+# query also supports @ flag to mark local vars
+Cmean = df['C'].mean()
+result1 = df[(df.A < Cmean) & (df.B < Cmean)]
+result2 = df.query('A < @Cmean and B < @Cmean')
+np.allclose(result1, result2)
+
+
+### Performance Tradeoffs: When to use these functions
