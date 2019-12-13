@@ -128,7 +128,7 @@ y = np.linspace(0, 5, 50)[:, np.newaxis]
 
 z = np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
 
-%matplotlib inline
+# %matplotlib inline
 import matplotlib.pyplot as plt
 
 plt.imshow(z, origin='lower', extent=[0, 5, 0, 5], cmap='viridis')

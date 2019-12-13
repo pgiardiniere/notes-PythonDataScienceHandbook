@@ -79,7 +79,7 @@ np.median(heights)
 np.percentile(heights, 75)
 
 ## we can also visualize with Matplotlib
-%matplotlib inline
+# %matplotlib inline
 import matplotlib.pyplot as plt
 import seaborn; seaborn.set()   # set plot style
 plt.hist(heights)
