@@ -1,23 +1,19 @@
-##################################################
 ### Python ints are more than ints
 # Comparison: Python code and C w/ re. to data types
 
-# /* C code */
+# C code    --- Explicit typing
 int result = 0;
 for(int i=0; i<100; i++){
     result += i;
 } 
-# note how all data types are explicitly stated
 
-# Python code
+# Python code - Implicit typing
 result = 0
 for i in range(100):
     result += i
-# where here all data types are inferred, allowing us to e.g. assign 'result' to a string without error
-
 
 # The standard python implementation is written in C
-# everything in Python is an object, all python objects are just compound C structures, 
+# everything in Python is an object, all python objects are just compound C structures
 
 # i.e. the following variable:
 x = 1000
@@ -35,22 +31,15 @@ struct _longobject {
     ob_size     # which specifies the size of the following data members
     ob_digit    # which contains the actual integer value that we expect the Python variable to represent.
 
-# Notice the difference here: 
-    # a C integer is a label for a position in memory
+# Again, difference being: 
+    # a C integer is a label for a position in memory containing
     # whose bytes encode an integer value. 
     # --------------------------------------------------
     # a Python integer is a pointer to a position in memory containing
-    # all the Python object information, including the bytes for int value
+    # all Python object information (header), and bytes encode an integer value
 
-
-##################################################
-### Python lists are more than lists
-# recall every python object must contain this reference information
-# to allow dynamic reassignment of variables.
-
-# now consider a basic Python list, which can contain heterogenous data types
-# every index of the list must also contain a reference to an object with all those types
-# in the above notes on ints
+# now consider a Python list, which can contain heterogenous data types
+# necessarily, each position contains an arbitrary Python object, so each index contains header data
 
 # arrays of single types are more efficient, as we can then use a general Py Object Header
 # (contained in the first position) which all subsequent indeces reference.
@@ -59,15 +48,15 @@ struct _longobject {
     # Built-in 'array' type in python       not used
     # NumPy arrays (np.array[])             quite useful
 
-# 1-built-in method
+# crappy, built-in way ::
 import array
 L = list(range(10))
 A = array.array('i', L)
 print(A) 
-# numpy achieves the same efficiency, and has the additional data operations/methods
 
-##################################################
+#########################
 ### NumPy Array construction and manipulation
+#########################
 # recall np arrays are single-type, numpy infers 1 type from the data
 import numpy as np
 np.array([1,4,2,5,3])

@@ -13,11 +13,11 @@ def compute_reciprocals(values):
     return output
 
 values = np.random.randint(1, 10, size=5)
-%timeit compute_reciprocals(values)
+# %timeit compute_reciprocals(values)
 
 # now, consider a case with a much bigger array of values:
 big_array = np.random.randint(1, 100, size=1000000)
-%timeit compute_reciprocals(big_array)
+# %timeit compute_reciprocals(big_array)
 
 # check the vals in iPython, note that it's orders of magnitude slower than it should be in both cases
 
@@ -30,7 +30,7 @@ big_array = np.random.randint(1, 100, size=1000000)
 # sample 1: ufunc operation b/w Scalar type and Array
 compute_reciprocals(values)
 1.0 / values
-%timeit (1.0 / big_array)
+# %timeit (1.0 / big_array)
 
 # sample 2: ufunc operation b/w Array type and Array
 np.arange(5) / np.arange(1, 6)
@@ -148,7 +148,7 @@ y = np.zeros(10)
 y = np.power(2, x, out=y[::2])
 y
 # compare speed between statement 2 and below, for a larger op, to see savings of not having temp array creation & copy
-y[::2] = 2 ** x
+# y[::2] = 2 ** x
 
 
 ## Aggregates

@@ -25,7 +25,7 @@ def square(a):
     return a ** 2
 # Docstring declared on first line. By convention, you always use triple quote for docstrings
 
-help(square)    
+help(square)
 square?
 
 ### Accessing Source Code with ??
