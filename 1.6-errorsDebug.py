@@ -1,8 +1,6 @@
 ### Controlling Exceptions - %xmode
-# %xmode is shorthand for 'exception mode'
-# With it we can control amt of info printed from exceptions
+# %xmode is shorthand for 'exception mode'. Controls verbosity of exception output
 
-# see following code:
 def func1(a, b):
     return a / b
 
@@ -11,34 +9,27 @@ def func2(x):
     b = x - 1
     return func1(a,b)
 
-func2(1)
-# ... it will throw division by 0 error (at Default %xmode)
+# func2(1) throws a 0 division error
 
-# %xmode has 3 options:
-# Plain, Context, Verbose
-# Plain     least output
-# Default   middle output - default option
-# Verbose   most ouput
-
-# in iPython, run 
 %xmode Plain
+func2(1)
+%xmode Default
 func2(1)
 %xmode Verbose
 func2(1)
 
-##############################
-### Debugging
-# standard python interactive debugger is 'pdb' - Python Debugger (points for creativity there)
-# the ipython interactive debugger is 'ipdb' - Interactive Python Debugger (again, props)
-# refer to online docs if you want to learn ALL the ways of launching them. Here, only covered is 1 magic, the following...
 
-### Convenient debugging with %debug
+### Debugging
+#  pdb  python interactive debugger  - Python Debugger
+# ipdb ipython interactive debugger  - Interactive Python Debugger
+
+# refer to online docs if you want to learn other ways of launching debug sessions.
 %debug
 # call AFTER hitting an exception to open an interactive debugging prompt (ipdb) - right at point of exception
-#
-# can navigate thru stack with 'up', 'down'
+
+# can navigate thru stack with up/down arrow keys
 # can print vals of variables & run other python commands in the ipdb session
-# exit with 'quit', or 'exit'
+# exit with 'exit' or 'quit'
 
 # can also set debugging to run automatically on hitting exception with '%pdb on'
 
@@ -50,14 +41,12 @@ ipdb > print(b)
 ipdb > exit
 
 
-### %run magic revisit
-# if you want to debug an external script / file, we use %run -d
-%run -d
-# will run the file, but you use 'next' cmd to step through lines of code (rather than automatic execution)
+# Debug external files:
+%run -d 
+# Executes in interactive mode __from the beginning__.  use next' to step through each line.
 
-############################################################
+
 ### Debugging commands: partial list
-##############################
 # Command 	    Description
 # list 	        Show the current location in the file
 # h(elp) 	    Show a list of commands, or find help on a specific command
