@@ -1,12 +1,10 @@
 ### iPython Magic commands
 # prefixed by either % or %% operators
 
-### single % 
-# named Line Magics
-# operates on a single line of input
+### single %  --- Line Magics
+# operate on a single line
 
-### double %%
-# named Cell Magics
+### double %% --- Cell Magics
 # operates on multiple lines of input
 
 ##############################
@@ -27,30 +25,25 @@ def donothing(x):
 # enter '--' on a line alone to signal you are done pasting
 
 ### Running external code
+# runs external files in the interpreter, defined functions persist in iPython namespace
 %run
-
-# used for running external files in the interpreter, AND keeping defined functions in the iPython namespace
-# in your iPython kernel, cd to the dir this file is stored in.
 %run <filename>.py
+%run?
 # then your defined functions in the file are available for use in the iPython session
    # This is useful for working interactively in a scratch space to quickly iterate on ideas in an existing file,
    # without accidentally screwing up the existing logic in-file.
 
-# see more options with '%run?'
-
 ### Timing code exec
-%timeit
-%%timeit
+# Fun note: the examples below show list comprehensions are faster 
+%timeit     # Line-magic
+%%timeit    # Cell-magic
 
-# useful code to test each:
 %timeit L = [n ** 2 for n in range(1000)]
 
 %%timeit
 L = []
 for n in range(1000): 
     L.append(n ** 2)
-
-# Fun note: the example above shows list comprehensions are faster than traditional method for this task
 
 ### Documentation & extras
 %magic    # returns manual for EVERY magic - super long
