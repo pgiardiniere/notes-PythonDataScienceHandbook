@@ -1,42 +1,22 @@
-### Python ints are more than ints
-# Comparison: Python code and C w/ re. to data types
-
-# C code    --- Explicit typing
-int result = 0;
-for(int i=0; i<100; i++){
-    result += i;
-} 
-
-# Python code - Implicit typing
-result = 0
-for i in range(100):
-    result += i
-
 # The standard python implementation is written in C
-# everything in Python is an object, all python objects are just compound C structures
+# everything in Python is an object. All python objects are compound C structs
 
 # i.e. the following variable:
 x = 1000
 # has the following expanded C structure:
-struct _longobject {
-    long ob_refcnt;
-    PyTypeObject *ob_type;
-    size_t ob_size;
-    long ob_digit[1];
-};
+# struct _longobject {
+#     long ob_refcnt;
+#     PyTypeObject *ob_type;
+#     size_t ob_size;
+#     long ob_digit[1];
+# };
 
-# So we see the following integer actually contains these things:
-    ob_refcnt   # a reference count that helps Python silently handle memory allocation and deallocation
-    ob_type     # which encodes the type of the variable
-    ob_size     # which specifies the size of the following data members
-    ob_digit    # which contains the actual integer value that we expect the Python variable to represent.
+# Each varaible's purpose
+    ob_refcnt           # reference count > a component of silent memory allocation/deallocation
+    ob_type             # object type     > holds the Python object type
+    ob_size             # object size     > specifies the size of the data members in bytes
+    ob_digit            # ob_digitwhich contains the actual integer value that we expect the Python variable to represent.
 
-# Again, difference being: 
-    # a C integer is a label for a position in memory containing
-    # whose bytes encode an integer value. 
-    # --------------------------------------------------
-    # a Python integer is a pointer to a position in memory containing
-    # all Python object information (header), and bytes encode an integer value
 
 # now consider a Python list, which can contain heterogenous data types
 # necessarily, each position contains an arbitrary Python object, so each index contains header data
