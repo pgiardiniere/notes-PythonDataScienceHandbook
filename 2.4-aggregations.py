@@ -29,7 +29,7 @@ A.min(axis=0)   # collapse row --> return min of cols
 A.max(axis=1)   # collapse col --> return max of rows
 
 # Most NumPy agg funcs have a NaN-safe equivalents (ignore NaN values).
-A.sum; A.nansum
+A.sum; np.nansum(A)
 
 
 # Partial List of Aggregation Functions:
@@ -53,7 +53,6 @@ np.all          # evaluate whether all elements are true
 import pandas as pd
 data = pd.read_csv('data/president_heights.csv')
 heights = np.array(data['height(cm)'])
-print(heights)
 
 heights.mean()
 heights.std()
