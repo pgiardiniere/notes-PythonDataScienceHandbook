@@ -1,6 +1,6 @@
 ### Computation on NumPy Arrays: Universal Functions
-# Using NP arrays in the traditional loop-style manner, is VERY slow
-# Vectorized operations are preferred, and generally implemented in ufuncs
+# Using NP arrays in the traditional iterative manner is slow
+# Vectorized operations are preferred - generally implemented in ufuncs
 
 # here's a traditional loop-based approach to operating on arr values to demonstrate
 import numpy as np
@@ -98,7 +98,7 @@ np.arctan(x)
 
 # side-note: recall that doubles get 15 decimal digits of precision.
 #            to get less messy output, must round.
-#            NON-Ufunc:  np.round(np.sin(theta), decimals=15)  # rounds to 15th (dec precision limit)
+#            NON-Ufunc:  np.round(np.sin(theta), decimals=15) # rounds to 15th (dec precision limit)
 #                ufunc:  np.rint( np.sin(theta))              # rounds to 0 th decimal
 
 
@@ -151,18 +151,14 @@ special.erfinv(x)
 # 3 topics: Out, Aggregates, Outer Products
 
 ## Specifying output: using "out"
-# We can directly specify mem location to store result of a calculation using "out"
+# We can directly specify mem location to store result of a calculation using "out". Imperative style -> huge efficiency gain
 x = np.arange(5)
 y = np.empty(5)
 np.multiply(x, 10, out=y)
 
 # Can also utilize this with array views
-y = np.zeros(10);   y = np.power(2, x, out=y[::2])
-y = np.zeros(10);   y[::2] = 2 ** x
-
-# the above 2 lines do the same thing, but 2nd line requires creation of temp array and full copy
-# so generally, specifying 'out' is just saying "store result in this memory location" in imperative style
-# means efficiency savings.
+y = np.zeros(10);   y = np.power(2, x, out=y[::2])  # y[::2] is a size=5 View of y. Save result into that view.
+y = np.zeros(10);   y = 2 ** x                      # Requires additional temp array + full copy
 
 
 ## Aggregates
@@ -180,7 +176,7 @@ np.multiply.accumulate(x)
 # np.sum, np.prod, np.cumsum, np.cumprod - respectively
 
 
-## Outer products
+## Outer products (generalized cross product)
 # Any ufunc can compute the output of all pairs of two different inputs with outer()
 x = np.arange(1, 6)
 np.multiply.outer(x, x)
