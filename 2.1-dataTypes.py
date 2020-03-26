@@ -38,7 +38,6 @@ np.empty(3)                     # create 1x3  arr   filled with uninitialized va
 np.eye(3)                       # create 3x3 Identity Matrix
 
 np.arange(0, 20, 2)             # arr filled with linear sequence, counting from 0 to 20, stepping by 2s
-np.arange(20, 2)
 
 np.linspace(0, 1, 5)            # arr of 5 values, evenly spaced, between 0 and 1
 

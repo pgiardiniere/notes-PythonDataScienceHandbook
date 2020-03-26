@@ -1,15 +1,3 @@
-### NumPy array basics
-# essentially all data manipulation in python is manip. of np arrays
-# esp. when you consider e.g. pandas (newer lib) extends on a base of np arrays
-
-# types of manipulations covered:
-    # Attributes of arrays
-    # Indexing of arrays
-    # Slicing of arrays
-    # Reshaping of arrays
-    # Concatenation and Splitting of arrays
-
-##############################
 ### NumPy Array Attributes:
 # using 3 arrays for examples, a 1d, 2d, and 3d array
 # using a set seed for reference
@@ -29,12 +17,12 @@ x3 = np.random.randint(10, size=(3,4,5))
     # nbytes    size (bytes) of the entire array
 
 # print each respective example of array attribute:
-print("x3 ndim: ", x3.ndim)         # returns: 3
-print("x3 shape:", x3.shape)        # returns: (3, 4, 5)
-print("x3 size:", x3.size)          # returns: 60
-print("x3 dtype:", x3.dtype)        # returns: int32
-print("x3 itemsize:", x3.itemsize)  # returns: 4
-print("x3.nbytes:", x3.nbytes)      # returns: 240          # generally this will simply be equal to product of size * itemsize
+print("x3 ndim    ", x3.ndim)      # 3
+print("x3 shape   ", x3.shape)     # (3, 4, 5)
+print("x3 size    ", x3.size)      # 60
+print("x3 dtype   ", x3.dtype)     # int32
+print("x3 itemsize", x3.itemsize)  # 4
+print("x3.nbytes  ", x3.nbytes)    # 240          # generally == size * itemsize
 
 ##############################
 ### Array indexing
@@ -50,7 +38,7 @@ x2[0, 0]
 x2[2, 0]
 x2[2, -1]
 x2[0, 0] = 12       # can access and reassign, as expected
-x2[0, 0] = 3.14     # however, type must be constant, so this will get SILENTLY truncated as our arrays are int32 types
+x2[0, 0] = 3.14     # Typing note - this decimal get truncated. 3 inserted.
 
 
 ##############################
@@ -63,62 +51,61 @@ x2[0, 0] = 3.14     # however, type must be constant, so this will get SILENTLY 
 
 # default values: 
     # start = 0 
-    # stop  = length (i.e. size of dimension || arr.len)
+    # stop  = length (arr.size)
     # step  = 1
 
 ## Slicing 1d subarrays
 x = np.arange(10)
-x[:5]   # first 5 elements
-x[5:]   # elements after 5
-x[4:7]
-x[::2]
-x[1::2]
+x[:5]   # elements [0, 5)
+x[5:]   # elements [5, x.size)
+x[4:7]  # elements 
+x[::2]  # elements [0, x.size) step by 2s     (all even nums)
+x[1::2] # elements [1, x.size) step by 2s     (all odd  nums)
 
-# interesting note: negative 'step' value swaps the default 'start' and 'stop' values.
-# meaning it's an effective shorthand to reverse an array:
+# negative step value swaps the default 'start' and 'stop' values.
+# it's certainly a method to reverse an array. 
 x[::-1]
-x[5::-2]
+x[5::-2]    # (imo, this just obscures index positions - i.e. whether they're inclusive or exclusive)
 
 ## Slicing 2d+ subarrays
 x2
-x2[:2, :3]      # 2 rows, 3 columns
-x2[:3, ::2]     # 3 rows (all), every other column
+x2[:2, :3]      # [0, 2) rows   [0, 3)       cols
+x2[:3, ::2]     # [0, 3) rows   [0, x2.size) cols,  step by 2   (so, 0th and 2nd cols)
 
 # subarray dimensions can be reversed together with negative step
 x2[::-1, ::-1]
 
 
 ## Accessing array rows and columns:
-# get a single row of columns of an array, simply combine indexing and slicing w/ empty slice
-x2[:, 0]    # return first column of x2
-x2[0, :]    # return first row of x2
-x2[0]       # return first row of x2 - functionally identical to above line
+# How to get a col from set of columns as an array?
+x2[:, 0]    # return first col
+x2[0, :]    # return first row
+x2[0]       # return first row     - terse syntax
 
 
-## subarrays as no-copy views
-# array slices in np are views, not copies, of array data
-# an example to demonstrate:
-x2                              # return original x2 data
-x2_sub = x2[:2, :2]             # create a subarray of x2
-x2_sub                          # return contents of subarray
-x2_sub[0,0] = 9001              # modify subarray contents
-x2                              # return MODIFIED x2 data
+## array slices in np are views, not copies, of array data
+x2
+x2_sub = x2[:2, :2]             # create a view of x2
+x2_sub
+x2_sub[0,0] = 9001
+x2                              # altered x2 by modifying x2_sub
 
-## Creating copies of arrays: copy()
-# when we DO desire an independent copy to be made of an array/subarray, we use the copy() method
-x2                              # return original x2 data
-x2_sub_copy = x2[:2, :2].copy() # create a subarray of x2 - independent copy!
-x2_sub_copy                     # return contents of subarray
-x2_sub_copy[0,0] = 42           # modify subarray contents
-x2                              # return ORIGINAL x2 data
+## We instead make copies of arrays using copy()
+x2
+x2_sub_copy = x2[:2, :2].copy() # create a full-copy of x2
+x2_sub_copy
+x2_sub_copy[0,0] = 42
+x2                              # No alteration of original x2
 
 
 ##############################
-### Reshaping of arrays
-# 'reshape()' is most flexible method for doing this
-# it attempts to create a no-copy view of initial array, but sometimes must create an independent copy (non-contiguous mem buffers)
+### Array Reshaping w/ np.reshape()
+# Attemps no-copy view of initial array.     But may create full-copy (if non-contiguous mem buffers)
+
+# must always ensure arr.size == arr.reshape().shape[0] * arr.reshape.shape[1]
+# i.e. the reshaped array dimension (assumeing an m x n matrix), we must have arr.size = mn
+
 grid = np.arange(1, 10).reshape((3, 3))
-# this example works b/c the size of both arrays matches
 
 ## 1d array >> 2d array
 # reshape() method:
@@ -130,26 +117,33 @@ x.reshape((3,1))        # column vector via reshape
 x[np.newaxis, :]        # row vector via newaxis
 x[:, np.newaxis]        # column vector via newaxis
 
+# The docs for newaxis reveal it's just an alias for None (see: np.newaxis?).  We can express instead as
+x[None, :]        # row vector via newaxis
+x[:, None]        # column vector via newaxis
+
 ##############################
 ### Array Concatenation and Splitting
-## Concatenation
-# routines/methods: np.concatenate, np.vstack, np.hstack
+## Concatenation methods: np.concatenate(), np.vstack(), np.hstack()
+
+# np.concatenate( (a1, a2, ...), axis=0, out=None )     # method signature
+# np.concatenate() REQUIRES a1.ndim == a2.ndim
 
 # np.concatenate() for 1d arrays:
 x = np.array([1, 2, 3])
 y = np.array([3, 2, 1])
-np.concatenate([x, y])      # returns: [1, 2, 3, 3, 2, 1]
+np.concatenate((x, y))      # returns: [1, 2, 3, 3, 2, 1]
 z = np.array([99, 99, 99])
 np.concatenate([x, y, z])   # returns: [1, 2, 3, 3, 2, 1, 99, 99, 99]
 
 # np.concatenate() for 2d arrays:
-grid = np.array([[1, 2, 3,], [4, 5, 6]])
-np.concatenate([grid, grid])                # concatenate along first axis
-np.concatenate([grid, grid], axis=1)        # concatenate along second axis (0-indexed)
+grid = np.array([[1, 2, 3], [4, 5, 6]])     # create  2x3 matrix
+np.concatenate([grid, grid])                # returns 4x3 matrix
+np.concatenate([grid, grid], axis=1)        # returns 2x6 matrix
 
-## for mixed dimension arrays, np.vstack and np.hstack maintain clarity
+
+## Mixed dimension arrays, must use np.vstack() and np.hstack()
 # vstack() ex:
-x    = np.array([9, 8, 7])
+x    = np.array( [9, 8, 7] )
 grid = np.array([[6, 5, 4],
                  [3, 2, 1]])
 np.vstack([x, grid])
@@ -159,20 +153,21 @@ y = np.array([[99],
               [99]])
 np.hstack([grid, y])
 
-# NOT covered: np.dstack()  --- stacks arrays along the third axis
+# also see :: np.dstack()  --- stacks arrays along the third axis
 
 
 ## Splitting
 # routines/methods: np.split, np.vsplit, np.hsplit
 # np.split() ex:
 x = [1, 2, 3, 99, 99, 3, 2, 1]
-x1, x2, x3 = np.split(x, [3, 5])    # x1=[1, 2, 3] x2=[99, 99] x3=[3, 2, 1] 
+x1, x2, x3 = np.split(x, [3, 5])    # x1=[1, 2, 3] x2=[99, 99] x3=[3, 2, 1]
 
-# np.vsplit() ex:
 grid = np.arange(16).reshape((4, 4))
+
+upper, lower =  np.split(grid, [2], axis=0)
 upper, lower =  np.vsplit(grid, [2])
 
-# np.hsplit() ex:
+left, right = np.split(grid, [2], axis=1)
 left, right = np.hsplit(grid, [2])
 
-# NOT covered: np.dsplit()  --- stacks arrays along the third axis
+# also see :: np.dsplit()  --- splits arrays for axis=2
