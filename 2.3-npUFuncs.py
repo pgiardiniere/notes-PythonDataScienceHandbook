@@ -125,7 +125,6 @@ np.log10(x)                 # base 10 logarithm
 x = [0, .001, .01, .1]
 np.exp(x)
 np.expm1(x)             # Calculates ``exp(x) - 1``  
-np.log(x)
 np.log1p(x)             # Calculates ``log(1 + x)``
 
 ## Specialized ufuncs
@@ -158,9 +157,8 @@ y = np.empty(5)
 np.multiply(x, 10, out=y)
 
 # Can also utilize this with array views
-y = np.zeros(10)
-y = np.power(2, x, out=y[::2])
-y[::2] = 2 ** x
+y = np.zeros(10);   y = np.power(2, x, out=y[::2])
+y = np.zeros(10);   y[::2] = 2 ** x
 
 # the above 2 lines do the same thing, but 2nd line requires creation of temp array and full copy
 # so generally, specifying 'out' is just saying "store result in this memory location" in imperative style
