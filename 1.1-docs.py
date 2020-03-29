@@ -10,7 +10,7 @@ L?
 
 # The ? operator also works for functions we define ourselves.
 def square(a):
-    """Return the square of a."""   # Always create docstring on 1st line with """.
+    """Return the square of a."""
     return a ** 2
 
 help(square)

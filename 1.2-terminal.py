@@ -1,8 +1,8 @@
 ### iPython shortcuts 
-# A more specific implementation of the GA linux terminal shortcuts. Per the src:
+# A more specific implementation of the GA linux terminal shortcuts.
     # These shortcuts are not in fact provided by IPython itself, 
     # but through its dependency on the GNU Readline library
-# Only recording those most-helpful ones which I am not already familiar with
+# Only recording those which I am not already familiar with
 
 ### Navigation
 # Ctrl-a    Cursor to beginning of line
@@ -14,14 +14,10 @@
 # Ctrl-y    Yank (paste) text last pulled with either of the above 2
 
 ### Reverse-search history:
+# Search goes beyond the current terminal session, into all cmdlets run.
 # Ctrl-r
-#
-# This goes BEYOND the current terminal session, into all cmdlets run
 
-# iPython in particular does a neat trick where it can pull previously defined
-# functions in the namespace
-
-#e.g. in a ipython session do:
+# iPython can list docstrings of functions defined in namespace.
 def square(a):
     """Returns the square of a."""
     return a ** 2
