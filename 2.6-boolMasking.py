@@ -1,57 +1,53 @@
-### Comparisons, Masks, and Boolean Logic
+# Comparisons, Masks, and Boolean Logic:
+
 # Masking is useful when you want to extract, modify, count, or just
-# manipulate values in an array based on some arbitrary criteria
+# manipulate values in an array based on some arbitrary criteria.
 
-# in Python, Boolean masking is usually most efficient way to achieve this
-
-## example: counting rainy days
-# load the daily rainfall statistics for Seattle in 2014:
 import numpy as np
 import pandas as pd
 
-rainfall = pd.read_csv('data/Seattle2014.csv')['PRCP'].values
-inches = rainfall / 254.0   # 1/10mm -> inches conversion
-inches.shape                # (365, 0) - daily measurement for 1 yr
-
-%matplotlib inline 		# iPython
+# %matplotlib inline
 import matplotlib.pyplot as plt
-import seaborn; seaborn.set()
+import seaborn
+seaborn.set()
+
+
+# Count rainy days for Seattle in 2014.
+rainfall = pd.read_csv('data/Seattle2014.csv')['PRCP'].values
+inches = rainfall / 254.0   # 1/10mm to inches conversion
+inches.shape
 
 plt.hist(inches, 40)
+# The histogram plot shows the general shape of data, masking reveals more.
 
-# histogram plot is good to see general shape of data
-# but for specific questions (e.g. num rainy days, avg precip on them, etc.)
-# use masking to quickly answer
 
-###################################
-### Comparison Operators as ufuncs
+# Masking with Comparison Operator uFuncs:
+
 # Before, we covered basic arithmetic operators as ufuncs: +, -, *, /
-# Now, we can add comparson operators to that list:
-# <, >, <=, >=, !=, ==
+# Now add: <, >, <=, >=, !=, ==
 
-# the result these return is always an array with boolean data type
+# The returned result is always an array with boolean data type, where
+# True == 1, False == 0.
 
 x = np.array([1, 2, 3, 4, 5])
 x < 3       # equivalent to np.less(x, 3)
-x > 3       # equiavlent to np.greater(x, 3)
-x <= 3      # equiavlent to np.less_equal(x, 3)
-x >= 3      # equiavlent to np.greater_equal(x, 3)
-x != 3      # equiavlent to np.notequal(x, 3)
-x == 3      # equiavlent to np.equal(x, 3)
+x > 3       # np.greater(x, 3)
+x <= 3      # np.less_equal(x, 3)
+x >= 3      # np.greater_equal(x, 3)
+x != 3      # np.notequal(x, 3)
+x == 3      # np.equal(x, 3)
 
-# also like before, these work with multi-dimensional arrays. 2D ex below:
+# As before, these work with multi-dimensional arrays.
 rng = np.random.RandomState(0)
 x = rng.randint(10, size=(3, 4))
-x
 x < 6
 
-## Working with Boolean Arrays
-# As is typical, True evaluates to 1, False evaluates to 0
-# so both of these methods count total True entries:
+# Both of these calls count total True entries on x < 6.
 np.count_nonzero(x < 6)
 np.sum(x < 6)
+
 # using sum, we can break up along axes as well
-np.sum(x < 6, axis=1)   # num vals < 6 in each row
+np.sum(x < 6, axis=1)
 
 np.any(x > 8)   # any vals > 8, returns bool (True)
 np.all(x < 0)   # any vals < 0, returns bool (False)
