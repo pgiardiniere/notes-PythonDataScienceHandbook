@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import seaborn
 seaborn.set()
 
-
 # Count rainy days for Seattle in 2014.
 rainfall = pd.read_csv('data/Seattle2014.csv')['PRCP'].values
 inches = rainfall / 254.0   # 1/10mm to inches conversion
@@ -22,9 +21,7 @@ plt.hist(inches, 40)
 
 
 # Masking with Comparison Operator uFuncs:
-
-# Before, we covered basic arithmetic operators as ufuncs: +, -, *, /
-# Now add: <, >, <=, >=, !=, ==
+# <, >, <=, >=, !=, ==
 
 # The returned result is always an array with boolean data type, where
 # True == 1, False == 0.
@@ -56,8 +53,8 @@ np.all(x == 6)
 # can also break these up along axes:
 np.all(x < 8, axis=1)
 
-## Boolean Operators
-# Reminder: Python's bitwise logic operators:
+
+# Masking with Bitwise Operator uFuncs:
 # &, |, ^, ~
 
 # &     np.bitwise_and
@@ -65,46 +62,40 @@ np.all(x < 8, axis=1)
 # ^     np.bitwise_xor
 # ~     np.bitwise_not
 
-# say we want all days with more than .5 inch rain, and less than 1
+# Recall bitwise operator precedence - parens required.
 np.sum((inches > .5) & (inches < 1))
-# recall bitwise operator precedence necessitates the extra use of parens
-
-# with this knowledge, we can use the following implementation to answer some basic questions
 np.sum(inches == 0)
 np.sum(inches != 0)
 np.sum(inches > 0.5)
-np.sum((inches > 0) & (inches > .2))
+np.sum((inches > 0) & (inches < .2))
 
-##############################
-### Boolean Arrays as Masks
-# In prior section, used aggregates computed directly on Boolean arrays
+
+# Boolean Arrays as Masks:
+
+# In prior section, used aggregates computed directly on Boolean arrays.
 # Can also use Boolean arrays as masks in order to select subsets of data
 
-x
-x < 5       # return the boolean array for condition
-x[x < 5]    # we can index ON the boolean array to return only vals which match condition
+# "Get x such that x < 5."
+x[x < 5]
 
-# construct mask of all rainy days
+# Make rainy the mask of all rainy days.
+# Then make summer the mask of all summer days (June 21st is 172nd day).
 rainy = (inches > 0)
-
-# construct mask of all summer days (June 21st being 172nd day)
 days = np.arange(365)
 summer = (days > 172) & (days < 262)
 
-np.median(inches[rainy])            # median precipitation on rainy days 
-np.median(inches[summer])           # median precipitation on summer days
-np.max(inches[summer])              # max precipitation on summer days
-np.median(inches[rainy & ~summer])  # median precipitation on non-summer days
+np.median(inches[rainy])
+np.median(inches[summer])
+np.max(inches[summer])
+np.median(inches[rainy & ~summer])
 
 
 # Aside: using keywords "and/or" vs Operators "&/|"
-# this is a subtle difference
-	# the keywords and/or operate on the entire object
-	# the symbols &/| operate on the bits within the object
+
+# The keywords 'and/or' operate on the entire object
+# The symbols  ' & / |' operate on the bits of the inner int/char/etc.
 
 # using "and" or "or" asks Python to treat the object act a single Bool entity
 
-# this has implications which are interesting (see chapter for exact details)
-# importantly, when dealing specifically with numpy arrays,
-# always use the bitwise, symbol operators "&" or "/"
-
+# NOTE: when dealing specifically with numpy arrays,
+# ALWAYS use bitwise operators.
