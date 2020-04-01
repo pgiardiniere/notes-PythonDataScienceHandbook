@@ -1,45 +1,38 @@
-### Computation on Arrays: Broadcasting
-# Broadcasting is another means of vectorizing operations to remove loops
-# It's a set of rules for applying binary ufuncs (addition, subt) on arrays of different sizes
-
-# binary ufunc on arrs of same size example
+# For arrs of same size, ufunc add works intuitively.
 import numpy as np
 a = np.array([0, 1, 2])
 b = np.array([5, 5, 5])
 a + b
 
-# ex1: add a scalar to an array (equiv. to above)
+# Adding a scalar to an array, has similarly intuitive definition.
 a + 5
 
-# ex2: add a 1d array to a 2d array:
+# Broadcasting: Add a 1d array to a 2d array.
+# Note that len(M[0]) == len(a)
 M = np.ones((3, 3))
-M
-M + a   # a is streched (i.e. broadcasted) across the second dimension to match M's shape
+M + a
+# 'a' is Broadcasted - 'a' is added for each inner array.
 
-# ex3: Simultaneous broadcasting of both arrays
+# Broadcasting: Add a 1d array to a 1d array, on seperate axes.
+# Result is a 3x3 Matrix
 a = np.arange(3)
 b = np.arange(3)[:, np.newaxis]     # form into 2d array of 1 column
-a
-b
 a + b
-# refer to the chapter for a figure (and appendix code) on this broadcast
-# summary: broadcast BOTH arrays into common shape (a 3x3), then perform the addition
 
-##############################
-### Rules of broadcasting:
-# In brief:
 
-# 1) If arrays differ in their number of dimensions, the shape of one with 
-#    fewer dimensions is padded with ones on its leading (left) side
-# 2) If the shape of the two arrays does not match in any dimension, the array 
-#    with shape equal to 1 in that dim is stretched to match the other shape
-# 3) If in any dimenstion the sizes disagree and neither is equal to 1, 
-#    an error is raised
+# Rules of Broadcasting:
 
-# examples below to demonstrate:
+# If arrays differ in their number of dimensions, the array with fewer
+#    dimensions is padded with ones on its leading (left) side.
 
-# ------------------------------
-### Broadcasting ex1: (demonstrates rules 1, 2)
+# If the shape of the two arrays does not match in any dimension, the array
+#    with size=1 in the mismatched dimension is stretched to match.
+
+# If the shape of the two arrays does not match in any dimension, and the
+#    and size!=1 for either arr in mismatched dimension, error thrown.
+
+
+# Demonstrates rules 1, 2
 M = np.ones((2, 3))
 a = np.arange(3)
 
