@@ -84,41 +84,35 @@ x
 # reset & re-use example above. this time using at()
 x = np.zeros(10)
 np.add.at(x, i, 1)
-x                   # [0. 0. 1. 2. 3. 0. 0. 0. 0. 0.]
+
 # at() does in-place application of the given operator at parameters specified
 # reduceat() is not covered here, but similar in application
 
-### example: binning data
+# Example: Computing a histogram and binning data.
 np.random.seed(42)
 x = np.random.randn(100)
 
-# compute a histogram by hand
 bins = np.linspace(-5, 5, 20)
 counts = np.zeros_like(bins)
 # find the appropriate bin for each x
 i = np.searchsorted(bins, x)
 # add 1 to each of these bins
 np.add.at(counts, i, 1)
-
-# count now reflect a number of points within each bin - i.e. a basic histogram
-# plot results:
 plt.plot(bins, counts, linestyle='steps');
 
 
-# creating bespoke histograms like this is silly, use plt.hist()
+# Of course, instead of bespoke histograms we'd use plt.hist() irl.
 plt.hist(x, bins, histtype='step');
 
-# function creates nearly identical plot to the first one, in one line.
-# To compute binning, matplotlib uses np.histogram func, which is similar.
-# comparison:
+# hist() creates nearly identical plot to the first one, in one line.
+# comparison of matplotlib and bespoke processes:
 print("NumPy routine:")
 %timeit counts, edges = np.histogram(x, bins)
 
 print("Custom routine:")
 %timeit np.add.at(counts, np.searchsorted(bins, x), 1)
 
-# the custom routine outperforms, but only b/c this use case is over-simplistic
-# try again with larger dataset:
+# The custom routine outperforms, but only b/c this use case is small.
 x = np.random.randn(1000000)
 print("NumPy routine:")
 %timeit counts, edges = np.histogram(x, bins)
