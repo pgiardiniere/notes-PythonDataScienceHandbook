@@ -38,52 +38,49 @@ X[1:, [2, 0, 1]]
 mask = np.array([1, 0, 1, 0], dtype=bool)
 X[row[:, np.newaxis], mask]
 
-# Example: selecting random points
+# Example: Selecting Random Points
+
 # Common use of fancy indexing: select subsets of rows in a matrix
-# Consider an arbitrary number of data points N for a data set with arbitrary number of dimsnesions D 
-# (in this case, a 2d normal distribution)
+# Consider arbitrary data points N, on arbitrary num of dimensions D
 mean = [0, 0]
 cov = [[1, 2],
        [2, 5]]
 X = rand.multivariate_normal(mean, cov, 100)
-X.shape     # returns (100, 2)
+X.shape
 
 import matplotlib.pyplot as plt
-import seaborn; seaborn.set() # for plot styling
+import seaborn; seaborn.set()
 
 plt.scatter(X[:, 0], X[:, 1])
 
-# with fancy indexing, we can easily select 20 random points (ensuring that they're each unique)
+# with fancy indexing, we can easily select 20 random points
 indeces = np.random.choice(X.shape[0], 20, replace=False)
 indeces
 selection = X[indeces]
 selection.shape
 
 # to see our selection on the graph, we can plot circles over them
-plt.scatter(X[:, 0], X[:, 1], alpha = 0.3)
-plt.scatter(selection[:, 0], selection[:, 1], facecolor='none', s=200) 
+plt.scatter(X[:, 0], X[:, 1], alpha=0.3)
+plt.scatter(selection[:, 0], selection[:, 1], facecolor='none', s=200)
 
-##############################
-### Modifying values with Fancy Indexing
-# In the following example, we use an array of indeces to modify the data at those indeces
+
+# Modifying Values with Fancy Indexing:
 x = np.arange(10)
 i = np.array[2, 1, 8, 4]
 x[i] = 99
-x
-# we can use any assignment operators
 x[i] -= 10
 
-## multiple operations on a single index: unintended effects!
+# Multiple operations on a single index occurs sequentially!
 x = np.zeros(100)
-x[[0, 0]] = [4, 6]  # assigns 4, then assigns 6 to index 0. Only 6 will remain
-x                   # [6. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
-# expanding on that idea...
+x[[0, 0]] = [4, 6]
+
+# Here, assignment is repeated, but not the incrementation
 i = [2, 3, 3, 4, 4, 4]
 x[i] += 1
-x                   # [6. 0. 1. 1. 1. 0. 0. 0. 0. 0.]
-# the assignment is repeated multiple times, but not the augmentation of "x[i] = x[i] + 1"
+x
 
-## multiple operations on a single index: the right way
+
+# Multiple operations on a single index: The Right Way.
 # reset & re-use example above. this time using at()
 x = np.zeros(10)
 np.add.at(x, i, 1)
