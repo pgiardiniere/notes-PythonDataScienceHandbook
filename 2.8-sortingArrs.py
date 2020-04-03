@@ -1,74 +1,62 @@
-### Sorting Arrays
-# covering the basic NP array sorting algorithms in this chapter
-# insertion sorts, selection sorts, merge sorts, quick sorts, bubble sorts, etc.
+# Basic NP array sorting algorithms in this chapter
+# Insertion, Selection, Merge, Quicksort, etc.
 
-# selection sort implementation:
+# Selection Sort:
 import numpy as np
+
 
 def selection_sort(x):
     for i in range(len(x)):
         swap = i + np.argmin(x[i:])
         (x[i], x[swap]) = (x[swap], x[i])
 
-# recall from cs401 - this requires N loops for list of N vals, so it's slow
-# but very simple to write. (also see author's notes on Big-O notation used to
-# describe algorithm scaling. a refreshing no-nonsense take)
 
-# bogosort - now with less efficiency!
+# Random sort, obviously horrendous.
 def bogosort(x):
     while np.any(x[:-1] > x[1:]):
         np.random.shuffle(x)
     return x
 
-# shuffle the entire array every time it isn't sorted, until it happens
-# that the shuffle() method produces a sorted array
-# average scaling of O[N * N!]
 
-##############################
-### NumPy built-in sort methods
-# python has a general built-in sort() and sorted() for lists, but NumPy's are better
+# NumPy's Sort Methods:
+# Python has built-in sort() & sorted() for Lists, but NumPy's are better
 
-# np.sort()
-# by default, uses a quicksort algorithm -- O[N log N] efficiency
-# mergesort and heapsort available by specifying
-
-# to return sorted version without modifying input arr:
+# np.sort() uses Quicksort by default.
+# Mergesort and Heapsort also available by specification.
 x = np.array([2, 1, 4, 3, 5])
-np.sort(x)
-# to sort array in-place, you would instead use sort() method of arrays
-x.sort()
+np.sort(x)      # Does not modify your object data.
+x.sort()        # Modifies object data.
 
 # argsort() method returns the indices of sorted elements
 x = np.array([2, 1, 4, 3, 5])
 i = np.argsort(x)
-i   # returns [1 0 3 2 4]
-# we can then construct the sorted array via fancy indexing
-x[i]
+x[i]                # construct sorted array via fancy indexing
 
-## Sorting along rows or columns
-# again, we can use the "axis" argument to specify rows/columns of multi-dimensional arrays
+
+# Sort 2D arrays along rows or columns using axis.
 rand = np.random.RandomState(42)
 X = rand.randint(0, 10, (4, 6))
-X
+np.sort(X, axis=0)
+np.sort(X, axis=1)
+# This treats each row/column as an independent array.
 
-np.sort(X, axis=0)  # sort each column of X
-np.sort(X, axis=1)  # sort each row of X
-# this treats each row/column as an independent array - relationships b/w the two are lost
 
-##############################
-### Partial sorts: Partitioning
+# Partial sorts: Partitioning
+
 # np.partition()
-# splits the array into 2 parts, where the first K indeces are the smallest vals in arr (interior of partitions is arbitrary order!)
-# parameters: arr, K (num of smallest indeces to shift forward)
+# Splits array into 2 parts, with first K indeces as the smallest vals
 x = np.array([7, 2, 3, 1, 6, 5, 4])
 np.partition(x, 3)
 
 # can also partition along axes of multi-dimensional arrays
 np.partition(X, 2, axis=1)
 
-# np.argpartition() extends the idea of np.argsort() - i.e. np.argpartition() returns the indeces of of the partition (see example)
+# np.argpartition()
+# See definition of argsort(), is the same for partition().
 
-## Example: k-Nearest Neighbors:
+
+# Example: k-Nearest Neighbors:
+
 # create random set of 10 points on 2d plane
 X = rand.rand(10, 2)
 
