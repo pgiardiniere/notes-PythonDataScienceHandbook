@@ -23,36 +23,33 @@ data['name']        # get all names
 data[0]             # get first row
 data[-1]['name']    # get name from last row
 
-# can combine this with our knowledge of masking to do filtering:
-# return names of those with age under 30
+# Return name of people less than 30 years old (by masking).
 data[data['age'] < 30]['name']
 
-# if you want to go beyond this in complexity, Pandas will be the more powerful utility 
+# While nice, you'd generally prefer Pandas for these types of datasets.
 
-###################################
-### Ways of creating Structured Arrays:
-# Dictionary method
-np.dtype({'names':('name', 'age', 'weight'),
-          'formats':('U10', 'i4', 'f8')})
 
-# We can specify numerical types with Python types or NP dtype S
-np.dtype({'names':('name', 'age', 'weight'),
-          'formats':((np.str_, 10), int, np.float32)})
+# Methods to Create Structured Arrays:
 
-# Compound types can be specified as list of tuples
+# Dictionary method...
+np.dtype({'names': ('name', 'age', 'weight'),
+          'formats': ('U10', 'i4', 'f8')})  # Python types
+np.dtype({'names': ('name', 'age', 'weight'),
+          'formats': ((np.str_, 10), int, np.float32)})  # NumPy types
+
+# List of Tuples method...
 np.dtype([('name', 'S10'), ('age', 'i4'), ('weight', 'f8')])
 
-# Finally, we can specify types without names in comma-seperated string
+# Unnamed data, types in comma-seperated string method...
 np.dtype('S10,i4,f8')
 
-###################################
-### shortened string format codes note:
 
-## first char:          specifies ordering convention for significant bits
-#   <   little endian       
+# NOTE: Shortened string format codes
+# first char:       specifies ordering convention for significant bits
+#   <   little endian
 #   >   big endian
 
-## second char: specifies the type of data
+# second char:      specifies the type of data
 #   b   Byte                    np.dtype('b')
 #   i   signed integer          np.dtype('i4')  == np.int32
 #   u   unsigned integer        np.dtype('u1')  == np.uint8
@@ -63,21 +60,21 @@ np.dtype('S10,i4,f8')
 #   U   Unicode string          np.dtype('U')   == np.str_
 #   V   Raw data (void)         np.dtype('V')   == np.void
 
-## third char: specifies size of object in bytes
+# third char: specifies size of object in bytes
 
-# ex: <f8   -little end. float point of 8 bytes
 
-###################################
-### More Advanced compound types
-# 1st example: data type of 'mat' (matrix) component
+# More Advanced Compound Types:
+"""Know this:
+np dtype maps directly to a C struct, meaning the buffer containing
+array content can be accessed directly by a C program.
+"""
 tp = np.dtype([('id', 'i8'), ('mat', 'f8', (3, 3))])
 X = np.zeros(1, dtype=tp)
 X[0]
 X['mat'][0]
-# this is a useful idea when creating Python interfaces to C / Fortran libs which manipulate structured data
-# (recall this NP dtype maps directly to a C structure def)
 
-## RecordArrays
+
+# RecordArrays:
 # np.recarray is almost identical to structured arrays, with one addition:
 # fields can be accessed as attributes rather than as dictionary keys
 
@@ -89,9 +86,9 @@ data_rec = data.view(np.recarray)
 data_rec.age
 
 # drawback being: extra overhead involved in accessing fields
-%timeit data['age']
-%timeit data_rec['age']
-%timeit data.age
+# %timeit data['age']
+# %timeit data_rec['age']
+# %timeit data.age
 
 # again, know that Pandas will be the generally preferred lib
 # for compound data types / structured arrays
