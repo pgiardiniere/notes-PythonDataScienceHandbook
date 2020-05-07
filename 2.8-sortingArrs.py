@@ -82,7 +82,7 @@ K = 2
 nearest_partition = np.argpartition(dist_sq, K + 1, axis=1)
 
 plt.scatter(X[:, 0], X[:, 1], s=100)
-# draw lines from each point to its two nearest neighbors 
+# draw lines from each point to its two nearest neighbors
 K = 2
 
 for i in range(X.shape[0]):

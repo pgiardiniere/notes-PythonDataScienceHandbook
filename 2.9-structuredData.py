@@ -1,35 +1,24 @@
-### NumPy Structured Arrays & Record Arrays
-# Sometimes data can not be represented as a homogenous array of values
-# In these situations, NP Structured Arrays & Record Arrays are useful
-    # Note: there is significant overlap of functionality with Pandas "Dataframe S", 
-    # which is generally more useful when going beyond simple operations. See CH 3
-
-# recall NP arrays default to a single type, makes tracking multiple categories of data sucky
 import numpy as np
-name = ['Alice', 'Bob', 'Cathy', 'Doug']
-age = [25, 45, 37, 19]
-weight = [55.0, 85.5, 68.0, 61.5]
 
-# also recall we can manually set dtype
+# Recall how to explicitly set dtype on a normal np array.
 x = np.zeros(4, dtype=int)
 
-# So, can use compound data type specification to make a structured array, with custom names and types. 
-# This is the Dictionary method of declaration:
-data = np.zeros(4, dtype={'names':('name', 'age', 'weight'),
-                         'formats':('U10', 'i4', 'f8')})
+# With np's Structured Arrays, we have multiple datatypes in one.
+data = np.zeros(4, dtype={'names': ('name', 'age', 'weight'),
+                          'formats': ('U10', 'i4', 'f8')})
 print(data.dtype)
 
 # U10 = 'unicode string, max length 10
 # i4  = '4-byte (32 bit) integer'
 # f8  = '8-byte (64 bit) float'
 
-# now we can feed our initial disparate lists into the structured array
-data['name'] = name
-data['age'] = age
-data['weight'] = weight
+# Now we can put lists containing data items on 4 people into a structured arr.
+data['name'] = ['Alice', 'Bob', 'Cathy', 'Doug']
+data['age'] = [25, 45, 37, 19]
+data['weight'] = [55.0, 85.5, 68.0, 61.5]
 print(data)
 
-# with structured arrays, we can refer to vals by index OR name (if both, seems index comes first)
+# with structured arrays, we can refer to vals by index or name
 data['name']        # get all names
 data[0]             # get first row
 data[-1]['name']    # get name from last row
