@@ -1,37 +1,25 @@
-### Visualization with Matplotlib
-# initially released in 2003, it's starting to show it's age (and get replaced)
-# it still has ubiquitous support though, and is widely popular to date
+# General Matplotlib Tips
 
-# "newer tools like ggplot and ggvis in R"
-# ..."web visualization toolkits based on D3.js and HTML5 canvas"
-    # lol and by just googling the name of the framework,
-    # naturally there's a Medium post on just doing it yourself 
-    # with modern CSS / native JS & virtual DOM manip instead of the framework
-    # https://medium.com/@PepsRyuu/why-i-no-longer-use-d3-js-b8288f306c9a
+# Importing shorthand:
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
-### General Matplotlib Tips
-
-## Importing shorthand:
-import matplotlib as mpl            # for entire lib
-import matplotlib.pyplot as plt     # for pyplot
-
-## Setting styles:
+# Setting styles:
 plt.style.use('classic')
 
-## using 'show()':
-# depends on context of mpl use.
+# Three contexts for using mpl:
 # 1) in a script
 # 2) in iPython terminal
 # 3) in iPython notebook
 
-# Plotting from a script:
-# in this context, plt.show() is very useful
-# plt.show() starts an event loop, looks for currently active figure objects, and opens one or more
-# interactive windows displaying the figure(s)
 
-# example:
-# ---------- file: myplot.py ----------
-import matplotlib.pyplot as plt
+# 1) Plotting from a script (i.e. some "name.py"):
+# In this context, we use plt.show()
+
+# plt.show() starts an event loop, looks for currently active figure objects,
+# and opens one or more interactive windows to display the active figure(s).
+
+# For example running this very file '4.00-introMatplotlib.py'.
 import numpy as np
 x = np.linspace(0, 10, 100)
 
@@ -39,17 +27,23 @@ plt.plot(x, np.sin(x))
 plt.plot(x, np.cos(x))
 
 plt.show()
-# if you run this script from command-line prompt, it will result in a window
-# opening with the figure --- yay it works
 
-####################
-### Plotting from an iPython shell
-# %matplotlib
-### Plotting from an iPython notebook
-# %matplotlib notebook  (interactive plots)
-# %matplotlib inline    (static images of plots)
+# If you run this script via command line through a Python interpreter which is
+# installed to the OS running your desktop environment / windowing system;
 
-# generally will use inline. The following example will embed a png in the notebook
+# Then show() will pop up a graph in a new window with the relevant plot.
+
+
+# 2) Plot from an iPython shell using the magic %matplotlib
+
+
+# 3) Plot from an iPython notebook using either magic...
+# %matplotlib notebook  for interactive plots.
+# %matplotlib inline    for static plots.
+
+# generally the book use inline. Port the following example to a .ipynb file.
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 import numpy as np
 x = np.linspace(0, 10, 100)
 
