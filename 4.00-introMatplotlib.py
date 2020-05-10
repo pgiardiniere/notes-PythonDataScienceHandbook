@@ -41,7 +41,8 @@ plt.show()
 # %matplotlib notebook  for interactive plots.
 # %matplotlib inline    for static plots.
 
-# generally the book use inline. Port the following example to a .ipynb file.
+# Generally the book uses inline plots.
+# NOTE: Port the following example to a .ipynb file.
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -51,12 +52,11 @@ fig = plt.figure()
 plt.plot(x, np.sin(x), '-')
 plt.plot(x, np.cos(x), '--')
 
-## Saving figures to file with savefig()
-fig.savefig('my_figure.png') 
 
-# can confirm with an 'ls -lh my_figure.png' - new file in current working dir
+# Save figures to file with savefig().
+fig.savefig('my_figure.png')
 
-# can also use python to display the contents of it using following:
+# Can use python to display the contents of it like so:
 from IPython.display import Image
 Image('my_figure.png')
 
@@ -64,15 +64,16 @@ Image('my_figure.png')
 # Depending on backends installed, the file formats differ. Print list with:
 fig.canvas.get_supported_filetypes()
 
-####################
-### MATLAB dual-interface --- state-based vs object-based
 
-## State-based interface: MATLAB style
-# Recall that Matplotlib originated as a Python alternative for current MATLAB users
-# it's syntax often is more reflective of MATLAB than python for this reason
+# Matlab dual-interface: state-based vs object-based
 
-# ---------- MATLAB style example ----------
-plt.figure()    # create plot figure
+# 1) State-based interface: Matlab-like
+
+# Recall that Matplotlib originated as a Python alt for Matlab junkies;
+# its syntax often is more reflective of Matlab than python for this reason
+
+# ---------- state-based example ----------
+plt.figure()            # create plot figure
 
 # create the first of two panels and set current axis
 plt.subplot(2, 1, 1)    # (rows, columns, panel number)
@@ -83,18 +84,19 @@ plt.subplot(2, 1, 2)
 plt.plot(x, np.cos(x))
 # ---------- End example --------------------
 
-# now we can discuss what 'stateful' means:
-# it's keeping track of the current figure and axes, which are where all 'plt'
-# commands are applied
-# you can get reference to these using 
-    # plt.gcf (get current figure) 
-    # plt.gca (get current axes)
 
-## Object-based interface: More power
-# Instead of depending on 'active' figures/axes as above, 
+# Stateful just means state-tracking.
+# I.e. plt has a notion of 'current' figure/axes, referenced by the following:
+# plt.gcf()     get current figure
+# plt.gca()     get current axes
+
+
+# 2) Object-based interface: more Pythonic
+
+# Instead of depending on 'active' figures/axes as above,
 # the plotting functions are methods of explicit Figure and Axes objects
 
-# ---------- Object style example ----------
+# ---------- Object-based example ----------
 # first, create a grid of plots
 # ax will be an array of two Axes objects
 fig, ax = plt.sublplots(2)
@@ -106,7 +108,7 @@ ax[1].plot(x, np.cos(x))
 # ---------- End example --------------------
 
 # for simpler figures, it's a matter of preference which style to use
-# for 'serious' or more complex work, object-oriented becomes a necessity
+# for more complex work, object-oriented is a necessity
 
 # book will switch between the 2 styles
 # (in most cases in-text, only real diff is using plt.plot() or ax.plot())
