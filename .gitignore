@@ -5,4 +5,5 @@
 data/20170107-061401-recipeitems.json
 data/FremontBridge.csv
 
-4-matplotlib/.ipynb_checkpoints/*
+4-matplotlib-ipynb/.ipynb_checkpoints/*
+4-matplotlib-ipynb/.ipynb_checkpoints/4.02-scatter-plots-checkpoint.ipynb
