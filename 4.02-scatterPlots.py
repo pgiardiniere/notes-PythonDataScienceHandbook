@@ -12,8 +12,8 @@ x = np.linspace(0, 10, 30)
 y = np.sin(x)
 plt.plot(x, y, 'o', color='black')
 
-# third arg represents type of symbol displayed on plot
-# demonstration of some common shorthand symbols and their results below:
+# Third argument represents type of symbol displayed on plot.
+# Below are common shorthand symbols and their results:
 rng = np.random.RandomState(0)
 for marker in ['o', '.', ',', 'x', '+', 'v', '^', '<', '>', 's', 'd']:
     plt.plot(rng.rand(5), rng.rand(5), marker,
@@ -21,10 +21,10 @@ for marker in ['o', '.', ',', 'x', '+', 'v', '^', '<', '>', 's', 'd']:
 plt.legend(numpoints=1)
 plt.xlim(0, 1.8)
 
-# character codes can be used together with line/color codes to plot points and connecting line
+# Character codes can be used together with line/color codes.
 plt.plot(x, y, '-ok')
 
-# additional keyword arguments to plt.plot: (more lines/markers)
+# additional keyword arguments to plt.plot(): (more lines/markers)
 plt.plot(x, y, '-p', color='gray',
          markersize=15, linewidth=4,
          markerfacecolor='white',
