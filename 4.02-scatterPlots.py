@@ -49,7 +49,7 @@ plt.scatter(x, y, c=colors, s=sizes, alpha=0.3, cmap='viridis')
 plt.colorbar()
 
 # So in addition to basic scatterplots, we can now use size and color of points
-# to convey information within the visualization itself. neat!
+# to convey more information within the visualization
 
 # this idea expanded in following ex: (iris data, 3 flower type measurements)
 from sklearn.datasets import load_iris
