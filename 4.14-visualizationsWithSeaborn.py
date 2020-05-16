@@ -23,9 +23,9 @@
 # Differences demo'd on a simple random walk.
 
 # Matplotlib classic plot style:
+# %matplotlib inline
 import matplotlib.pyplot as plt
 plt.style.use('classic')
-# %matplotlib inline
 import numpy as np
 import pandas as pd
 
