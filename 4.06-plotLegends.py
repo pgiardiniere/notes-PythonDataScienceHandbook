@@ -1,16 +1,15 @@
-##############################
-### Customizing Plot Legends
-# Plot legends are very important for communicating meaning of your plots
-# here we will focus on legend aesthetics
 
-# as seen before, the simplest legends are created with the plt.legend() method
-# which automatically creates a legend for any previously labeled plot elements
+# Customizing Plot Legends
 
+# As seen before, the simplest legends are created with plt.legend(),
+# which creates a legend for any labeled plot elements.
+
+# %matplotlib inline
 import matplotlib.pyplot as plt
 plt.style.use('classic')
-# %matplotlib inline
 import numpy as np
 
+# Output figure is the plot with simple legend we've dealt with thus far.
 x = np.linspace(0, 10, 1000)
 fig, ax = plt.subplots()
 ax.plot(x, np.sin(x), '-b', label='Sine')
@@ -18,44 +17,39 @@ ax.plot(x, np.cos(x), '--r', label='Cosine')
 ax.axis('equal')
 leg = ax.legend()
 
-# output observed is the simple legend we've dealt with thus far
-
-## we can customize this legend's location and remove the frame as follows:
+# Customize this legend's location and remove the frame.
 ax.legend(loc='upper left', frameon=False)
 fig
 
-# further, can customize number of columns with ncol
+# Customize number of columns with ncol.
 ax.legend(frameon=False, loc='lower center', ncol=2)
 fig
 
-# can use rounded box, and add shadowing, or transparency (alpha), as well as padding:
+# Use rounded box, add shadowing, add no transparency (alpha=1), specify pad.
 ax.legend(fancybox=True, framalpha=1, shadow=True, borderpad=1)
 fig
 
-# see additional legend options by checking plt.legend docstring
 
-###################################
-### Choosing elements for the legend
-# as we have seen, legend includes all labeled elems by default
-# plt.plot() command is able to create multiple lines, returns a list of created line instances
-# passing any given line to plt.legend() tells it which to identify, and it's label:
+# Choosing elements for the legend:
+
+# As we have seen, legend includes all labeled els by default.
+# plt.plot() can create multiple lines, returning a list of created instances.
+# By passing lines along with desired labels to plt.legend() to ID only those.
 
 y = np.sin(x[:, np.newaxis] + np.pi * np.arange(0, 2, 0.5))
 lines = plt.plot(x, y)
-# lines is a list of plt.Line2D instances
 plt.legend(lines[:2], ['first', 'second'])
 
-# in practice, it is author's opinion that is clearer to use the first method,
-# i.e. apply labels to the plot elements you want to show in the legend in advance
+# In practice, you would probably prefer creating legend labels as below,
+# applying labels to the plot els to display in the legend at initialization.
 plt.plot(x, y[:, 0], label='first')
 plt.plot(x, y[:, 1], label='second')
 plt.plot(x, y[:, 2:])
 plt.legend(framalpha=1, framon=True)
 
-# I would agree, second example shows the labels at plt.plot() point,
-# so of course plt.legend() would pick those up and not the third
 
-### Legend for Size of Points
+# Legend for Size of Points:
+
 # sometimes the defaults are not sufficient for a visualization
     # HAH! HAHA! THE AUTHOR MADE A TYPO
     # "For example, perhaps you're be using the size of points to mark..."
