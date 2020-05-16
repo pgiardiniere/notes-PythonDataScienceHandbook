@@ -45,28 +45,25 @@ plt.legend(lines[:2], ['first', 'second'])
 plt.plot(x, y[:, 0], label='first')
 plt.plot(x, y[:, 1], label='second')
 plt.plot(x, y[:, 2:])
-plt.legend(framalpha=1, framon=True)
+plt.legend(framealpha=1, frameon=True)
 
 
 # Legend for Size of Points:
 
-# sometimes the defaults are not sufficient for a visualization
-    # HAH! HAHA! THE AUTHOR MADE A TYPO
-    # "For example, perhaps you're be using the size of points to mark..."
-    # he's human like me after all lel
+# In the following example, the size of a point on our plot is meaningful.
 
-# following is an example of using size of points to indicate populations
-# legend should specify scale of sizes at points, accomplished by plotting labeled data with no entries
+# By plotting empty lists, we create labled plot objects which are picked
+# up by the legend, revealing the visual scale.
 
-# ------------- example begin -----------------
+# We must do this as the legend will always reference an object on the plot,
+# but we don't want the scale reference on the actual plot.
+
 import pandas as pd
 cities = pd.read_csv('data/california_cities.csv')
-
-# extract data we're analyzing
 lat, lon = cities['latd'], cities['longd']
 population, area = cities['population_total'], cities['area_total_km2']
 
-# Scatter the points, using size and color, but no label
+# Scatter the points, using size and color, but no label.
 plt.scatter(lon, lat, label=None,
             c=np.log10(population), cmap='viridis',
             s=area, linewidth=0, alpha=0.5)
@@ -76,32 +73,22 @@ plt.ylabel('latitude')
 plt.colorbar(label='log$_{10}$(population)')
 plt.clim(3, 7)
 
-# create legend & plot: plotting empty lists with desired size and label
+# Create legend: plot empty lists with desired area, then label and add.
 for area in [100, 300, 500]:
     plt.scatter([], [], c='k', alpha=0.3, s=area, label=str(area) + ' km$^2$')
 plt.legend(scatterpoints=1, frameon=False, labelspacing=1, title='City Area')
-plt.title('California Cities: Area and Population')
+plt.title('California Cities: Area and Population');
 
-# ------------- example end -----------------
 
-# the legend will always reference an object that is on the plot
-# in this case, the objects were not on the plot (the gray circles)
-# so we plot empty lists to achieve them
+# Multiple Legends:
 
-# by plotting empty lists, we create labled plot objects which are picked
-# up by the legend, now it reveals the scale visual factor
+# Sometimes it makes sends to add multiple legends to the same axes,
+# but plt.legend() only allows for 1.
 
-#########################
-### Multiple legends
-# sometimes it makes sends to add multiple legends to the same axes
-# plt.legend() ONLY allows for 1 however
+# To work around this, we must create a new legend artist ourselves,
+# then use the ax.add_artist() method to add the second artist to the plot.
 
-# to work around it, we must create a new legend artist from scratch,
-# then use the ax.add_artist() method to add the second artist to the plot
-
-# ------------------------------
 fig, ax = plt.subplots()
-
 lines = []
 styles = ['-', '--', '-.', ':']
 x = np.linspace(0, 10, 1000)
@@ -111,12 +98,11 @@ for i in range(4):
 
 ax.axis('equal')
 
-# specify the lines and labels of the first legend
+# Create the first legend as usual.
 ax.legend(lines[:2], ['line A', 'line B'], loc='upper right', frameon=False)
 
-# create the second legend and add the artist manually
+# Create the second legend and add the artist
 from matplotlib.legend import Legend
-leg = Legend(ax, lines[2:], ['line C', 'line D'], loc='lower right', frameon=False)
+leg = Legend(ax, lines[2:], ['line C', 'line D'],
+             loc='lower right', frameon=False)
 ax.add_artist(leg)
-# ------------------------------
-
