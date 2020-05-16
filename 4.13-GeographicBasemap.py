@@ -21,6 +21,6 @@ plt.figure(figsize=(8, 8))
 m = Basemap(projection='ortho', resolution=None, lat_0=50, lon_0=-100)
 m.bluemarble(scale=0.5)
 
-# go look further into whether Basemap has been replaced
-# if so, determine what the replacement is
-# don't spend any extra time implementing code for a deprecated lib
+# As above, would need to 'conda install basemap' for this.
+# I'm not really interested in geographic maps at this time.
+# I'll revisit this later.
